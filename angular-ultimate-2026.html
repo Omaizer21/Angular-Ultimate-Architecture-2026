@@ -1,0 +1,1643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Angular Ultimate Architecture Guide 2026</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@300;400;500;600;700&family=Raleway:wght@300;400;600;700;900&display=swap');
+:root {
+  --bg:#07080d; --sur:#0d0f18; --sur2:#111422; --sur3:#161b2a;
+  --bdr:#1a1e2e; --bdr2:#252c42; --bdr3:#2e3750;
+  --red:#dd0031; --rdim:rgba(221,0,49,.12); --rglow:rgba(221,0,49,.22);
+  --blue:#4f9eff; --bdim:rgba(79,158,255,.1);
+  --grn:#34d399; --gdim:rgba(52,211,153,.1);
+  --ylw:#fbbf24; --ydim:rgba(251,191,36,.1);
+  --pur:#c084fc; --pdim:rgba(192,132,252,.1);
+  --cyn:#22d3ee; --cdim:rgba(34,211,238,.1);
+  --org:#fb923c; --odim:rgba(251,146,60,.1);
+  --pnk:#f472b6; --pkdim:rgba(244,114,182,.1);
+  --txt:#dde4f0; --txt2:#8b96b0; --txt3:#4a5370; --txt4:#2a3048;
+  --fld:#fbbf24; --mono:'Inconsolata',monospace; --sans:'Raleway',sans-serif; --rad:8px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:var(--mono);min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--bdr2);border-radius:3px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+.hero{padding:56px 52px 48px;position:relative;overflow:hidden;border-bottom:1px solid var(--bdr)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--bdr) 1px,transparent 1px),linear-gradient(90deg,var(--bdr) 1px,transparent 1px);background-size:48px 48px;opacity:.35;pointer-events:none}
+.hero-orb{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none}
+.o1{top:-120px;right:-80px;width:500px;height:500px;background:radial-gradient(circle,rgba(221,0,49,.2),transparent 68%)}
+.o2{bottom:-100px;left:15%;width:400px;height:400px;background:radial-gradient(circle,rgba(79,158,255,.1),transparent 68%)}
+.o3{top:0;left:-100px;width:300px;height:300px;background:radial-gradient(circle,rgba(192,132,252,.08),transparent 68%)}
+.hero-inner{position:relative;z-index:1;max-width:1400px;margin:0 auto}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;margin-bottom:22px;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--red);font-weight:600}
+.eyebrow::before,.eyebrow::after{content:\'\';display:block;height:1px;width:36px;background:var(--red);opacity:.5}
+.hero-title{font-family:var(--sans);font-size:clamp(38px,6.5vw,76px);font-weight:900;line-height:1.0;letter-spacing:-.03em;margin-bottom:10px}
+.hero-title .ang{color:var(--red)}
+.hero-title .dim{color:var(--txt2);font-weight:300}
+.hero-sub{font-family:var(--sans);font-size:clamp(13px,1.6vw,16px);font-weight:300;color:var(--txt2);margin-bottom:28px;max-width:680px;line-height:1.7}
+.hero-sub strong{color:var(--txt)}
+.htags{display:flex;flex-wrap:wrap;gap:8px}
+.htag{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:3px;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border:1px solid;transition:transform .15s,box-shadow .15s}
+.htag:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,.3)}
+.ht-red{background:var(--rdim);border-color:rgba(221,0,49,.35);color:var(--red)}
+.ht-blue{background:var(--bdim);border-color:rgba(79,158,255,.3);color:var(--blue)}
+.ht-grn{background:var(--gdim);border-color:rgba(52,211,153,.3);color:var(--grn)}
+.ht-pur{background:var(--pdim);border-color:rgba(192,132,252,.3);color:var(--pur)}
+.ht-cyn{background:var(--cdim);border-color:rgba(34,211,238,.3);color:var(--cyn)}
+.ht-ylw{background:var(--ydim);border-color:rgba(251,191,36,.3);color:var(--ylw)}
+.ht-org{background:var(--odim);border-color:rgba(251,146,60,.3);color:var(--org)}
+.ht-pnk{background:var(--pkdim);border-color:rgba(244,114,182,.3);color:var(--pnk)}
+
+.nav{position:sticky;top:0;z-index:200;background:rgba(7,8,13,.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--bdr);display:flex;overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.ni{padding:13px 18px;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--txt3);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;text-decoration:none;display:inline-block}
+.ni:hover{color:var(--txt);border-bottom-color:var(--bdr2)}
+.ni.active{color:var(--red);border-bottom-color:var(--red)}
+
+.content{max-width:1600px;margin:0 auto}
+.sec{padding:48px 52px;border-bottom:1px solid var(--bdr)}
+.sec-head{display:flex;align-items:flex-start;gap:16px;margin-bottom:32px}
+.sec-icon{width:42px;height:42px;border-radius:var(--rad);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.sec-title{font-family:var(--sans);font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+.sec-desc{font-size:12px;color:var(--txt2);line-height:1.6;letter-spacing:.02em}
+
+.size-toggle{display:flex;gap:0;background:var(--sur2);border:1px solid var(--bdr);border-radius:var(--rad);overflow:hidden;margin-bottom:28px;width:fit-content}
+.st-btn{padding:10px 28px;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border:none;background:transparent;color:var(--txt3);transition:all .2s;border-right:1px solid var(--bdr)}
+.st-btn:last-child{border-right:none}
+.st-btn:hover{color:var(--txt);background:rgba(255,255,255,.04)}
+.st-btn.active{background:var(--rdim);color:var(--red)}
+.sz{display:none}.sz.active{display:block;animation:fadeUp .3s ease}
+
+.tree-wrap{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rad);overflow:hidden}
+.tree-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--sur2);border-bottom:1px solid var(--bdr)}
+.tree-bar-l{display:flex;align-items:center;gap:10px}
+.tdots{display:flex;gap:5px}.td{width:10px;height:10px;border-radius:50%}
+.td-r{background:#ff5f57}.td-y{background:#febc2e}.td-g{background:#28c840}
+.tlabel{font-size:11px;color:var(--txt2);letter-spacing:.05em}
+.tree-body{padding:14px 18px}
+.tl{display:flex;align-items:flex-start;padding:2.5px 0;border-radius:3px;transition:background .1s}
+.tl:hover{background:rgba(255,255,255,.022)}
+.ti{padding-left:18px}
+.tc{font-size:12px;color:var(--txt4);user-select:none;flex-shrink:0;white-space:pre;min-width:18px}
+.tn{font-size:12px;flex:1;line-height:1.5}
+.tcm{font-size:10px;color:var(--txt3);margin-left:10px;font-style:italic;white-space:nowrap;align-self:center}
+.f{color:var(--fld);font-weight:600}.ts{color:#60a5fa}.htm{color:#fb923c}
+.scs{color:#f472b6}.spc{color:var(--grn)}.jsn{color:var(--pur)}
+.env{color:var(--cyn)}.mdd{color:var(--txt2)}.cfg{color:var(--ylw)}
+.tl-tog{cursor:pointer;user-select:none}
+.tl-tog .arrow{display:inline-block;transition:transform .2s;font-size:9px;color:var(--txt3);margin-right:4px}
+.tl-tog.open .arrow{transform:rotate(90deg)}
+.coll{overflow:hidden;max-height:0;opacity:0;transition:max-height .3s ease,opacity .2s}
+.coll.open{max-height:3000px;opacity:1}
+
+.tag{display:inline-flex;align-items:center;font-size:9px;padding:1px 7px;border-radius:3px;letter-spacing:.08em;font-weight:700;text-transform:uppercase;margin-left:8px;vertical-align:middle;border:1px solid;flex-shrink:0}
+.t-new{background:rgba(52,211,153,.1);color:var(--grn);border-color:rgba(52,211,153,.3)}
+.t-lazy{background:rgba(192,132,252,.1);color:var(--pur);border-color:rgba(192,132,252,.3)}
+.t-single{background:rgba(221,0,49,.1);color:var(--red);border-color:rgba(221,0,49,.3)}
+.t-shared{background:rgba(34,211,238,.1);color:var(--cyn);border-color:rgba(34,211,238,.3)}
+.t-sig{background:rgba(251,191,36,.1);color:var(--ylw);border-color:rgba(251,191,36,.3)}
+.t-exc{background:rgba(244,114,182,.1);color:var(--pnk);border-color:rgba(244,114,182,.3)}
+.t-warn{background:rgba(251,146,60,.1);color:var(--org);border-color:rgba(251,146,60,.3)}
+
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px}
+@media(max-width:1200px){.g4{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.g2,.g3,.g4{grid-template-columns:1fr}.sec{padding:32px 24px}.hero{padding:36px 24px}}
+
+.card{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rad);padding:20px;transition:border-color .2s,transform .18s}
+.card:hover{border-color:var(--bdr2);transform:translateY(-2px)}
+.card-title{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+.card ul{list-style:none;display:flex;flex-direction:column;gap:6px}
+.card li{font-size:11.5px;color:var(--txt2);padding-left:16px;position:relative;line-height:1.55}
+.card li::before{content:"\25B8";position:absolute;left:0;font-size:9px;top:3px}
+.card li strong{color:var(--txt)}
+.card li code{background:var(--sur2);border:1px solid var(--bdr);border-radius:3px;padding:0 5px;font-size:10px;color:var(--blue)}
+
+.cb{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rad);overflow:hidden;font-size:11.5px;line-height:1.72}
+.cb-head{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;background:var(--sur2);border-bottom:1px solid var(--bdr)}
+.cb-lang{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:600;color:var(--txt2);letter-spacing:.05em}
+.cb-copy{font-size:10px;color:var(--txt3);background:none;border:1px solid var(--bdr);border-radius:3px;padding:2px 8px;cursor:pointer;font-family:var(--mono);transition:all .15s}
+.cb-copy:hover{color:var(--grn);border-color:var(--grn)}
+.cb-copy.ok{color:var(--grn);border-color:var(--grn)}
+pre{padding:16px 18px;overflow-x:auto;margin:0;white-space:pre}
+code{font-family:var(--mono)}
+.kw{color:#c792ea}.fn{color:#82aaff}.str{color:#c3e88d}
+.cm{color:var(--txt3);font-style:italic}.dec{color:#ffcb6b}
+.tp{color:#89ddff}.pr{color:#f07178}.im{color:var(--cyn)}.nm{color:var(--org)}
+
+.tw{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rad);overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:11.5px}
+th{text-align:left;padding:9px 14px;background:var(--sur2);color:var(--txt2);font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:10px;border-bottom:1px solid var(--bdr);white-space:nowrap}
+td{padding:8px 14px;border-bottom:1px solid rgba(26,30,46,.6);vertical-align:top;line-height:1.55}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.012)}
+.td-t{color:var(--cyn);font-weight:600}
+.td-c{background:var(--sur2);border:1px solid var(--bdr);border-radius:3px;padding:1px 7px;font-size:10.5px;color:#c3e88d;white-space:nowrap;font-family:var(--mono)}
+.td-old{color:var(--red);text-decoration:line-through;opacity:.6;font-size:10.5px}
+.td-new{color:var(--grn);font-size:10.5px}
+.td-n{color:var(--txt3);font-size:10.5px;font-style:italic}
+
+.co{border-radius:var(--rad);padding:14px 18px;margin-bottom:18px;border-left:3px solid;font-size:12px;line-height:1.65}
+.co-t{font-weight:700;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px}
+.co-warn{background:rgba(251,191,36,.06);border-color:var(--ylw)}.co-warn .co-t{color:var(--ylw)}
+.co-info{background:rgba(79,158,255,.06);border-color:var(--blue)}.co-info .co-t{color:var(--blue)}
+.co-tip{background:rgba(52,211,153,.06);border-color:var(--grn)}.co-tip .co-t{color:var(--grn)}
+.co-fix{background:rgba(221,0,49,.06);border-color:var(--red)}.co-fix .co-t{color:var(--red)}
+.co-new{background:rgba(251,146,60,.06);border-color:var(--org)}.co-new .co-t{color:var(--org)}
+.co p{color:var(--txt2)}.co code{background:rgba(255,255,255,.06);border-radius:3px;padding:0 5px;font-size:10.5px;color:var(--txt)}
+.co strong{color:var(--txt)}.co a{color:var(--blue);text-decoration:none}
+
+.div{display:flex;align-items:center;gap:12px;margin:26px 0 18px;font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--txt3)}
+.div::before,.div::after{content:\'\';flex:1;height:1px;background:var(--bdr)}
+
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:700px){.cmp{grid-template-columns:1fr}}
+.rule{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:3px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.r-do{background:rgba(52,211,153,.1);color:var(--grn);border:1px solid rgba(52,211,153,.3)}
+.r-dn{background:rgba(221,0,49,.1);color:var(--red);border:1px solid rgba(221,0,49,.3)}
+.r-ol{background:rgba(251,146,60,.1);color:var(--org);border:1px solid rgba(251,146,60,.3)}
+
+.checklist{display:flex;flex-direction:column;gap:6px}
+.cli-item{display:flex;align-items:flex-start;gap:10px;padding:8px 12px;border-radius:5px;background:var(--sur);border:1px solid var(--bdr);transition:border-color .15s;cursor:pointer}
+.cli-item:hover{border-color:var(--bdr2)}
+.cli-item input[type=checkbox]{accent-color:var(--grn);width:14px;height:14px;flex-shrink:0;margin-top:2px;cursor:pointer}
+.cli-item label{font-size:11.5px;color:var(--txt2);line-height:1.5;cursor:pointer;flex:1}
+.cli-item label strong{color:var(--txt)}
+.cli-item label code{background:var(--sur2);border:1px solid var(--bdr);border-radius:3px;padding:0 5px;font-size:10px;color:var(--blue)}
+.cli-item.done label{color:var(--txt3);text-decoration:line-through}
+
+.cli-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:800px){.cli-grid{grid-template-columns:1fr}}
+.cli-cmd{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rad);padding:14px 16px;transition:border-color .2s}
+.cli-cmd:hover{border-color:var(--bdr2)}
+.cli-title{font-size:11px;color:var(--txt2);font-weight:600;letter-spacing:.05em;margin-bottom:6px}
+.cli-code{background:var(--sur2);border-radius:4px;padding:7px 10px;font-size:11px;color:var(--grn);font-family:var(--mono);display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:5px}
+.cli-note{font-size:10px;color:var(--txt3);font-style:italic}
+
+.mistake{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rad);overflow:hidden;transition:border-color .2s}
+.mistake:hover{border-color:var(--bdr2)}
+.mistake-head{display:flex;align-items:center;gap:12px;padding:14px 18px;background:rgba(221,0,49,.04);border-bottom:1px solid var(--bdr)}
+.mistake-num{width:28px;height:28px;border-radius:50%;background:var(--rdim);border:1px solid rgba(221,0,49,.3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--red);flex-shrink:0}
+.mistake-title{font-size:12px;font-weight:600;color:var(--txt);flex:1}
+.mistake-body{padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+
+.mig-step{display:flex;gap:16px;align-items:flex-start;padding:16px;background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rad);transition:border-color .2s}
+.mig-step:hover{border-color:var(--bdr2)}
+.mig-num{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--sans);font-size:13px;font-weight:700;flex-shrink:0}
+.mig-title{font-size:13px;font-weight:600;margin-bottom:5px}
+.mig-desc{font-size:11.5px;color:var(--txt2);line-height:1.6}
+.mig-desc code{background:var(--sur2);border-radius:3px;padding:0 5px;font-size:10.5px;color:var(--blue)}
+
+.tabs{display:flex;background:var(--sur2);border:1px solid var(--bdr);border-radius:var(--rad) var(--rad) 0 0;overflow:hidden}
+.tab-btn{padding:10px 20px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border:none;background:transparent;color:var(--txt3);transition:all .2s;border-right:1px solid var(--bdr)}
+.tab-btn:last-child{border-right:none}
+.tab-btn:hover{color:var(--txt);background:rgba(255,255,255,.03)}
+.tab-btn.active{color:var(--blue);background:var(--bdim)}
+.tab-pane{display:none;border:1px solid var(--bdr);border-top:none;border-radius:0 0 var(--rad) var(--rad);overflow:hidden}
+.tab-pane.active{display:block;animation:fadeUp .25s ease}
+
+.sbadge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:3px;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border:1px solid}
+.sb-sm{background:rgba(52,211,153,.1);color:var(--grn);border-color:rgba(52,211,153,.3)}
+.sb-md{background:rgba(79,158,255,.1);color:var(--blue);border-color:rgba(79,158,255,.3)}
+.sb-en{background:rgba(221,0,49,.1);color:var(--red);border-color:rgba(221,0,49,.3)}
+
+.pill{display:inline-flex;align-items:center;padding:2px 10px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:.05em}
+.p-red{background:var(--rdim);color:var(--red)}.p-blue{background:var(--bdim);color:var(--blue)}
+.p-grn{background:var(--gdim);color:var(--grn)}.p-org{background:var(--odim);color:var(--org)}
+.p-pur{background:var(--pdim);color:var(--pur)}
+
+.pb{height:2px;background:var(--bdr);position:fixed;top:0;left:0;right:0;z-index:999}
+.pb-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--pur));transition:width .08s;width:0}
+#scrollTop{position:fixed;bottom:28px;right:28px;width:38px;height:38px;background:var(--sur2);border:1px solid var(--bdr2);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--txt2);font-size:18px;transition:all .2s;opacity:0;pointer-events:none;z-index:100;font-family:var(--mono)}
+#scrollTop.vis{opacity:1;pointer-events:all}
+#scrollTop:hover{background:var(--rdim);color:var(--red);border-color:rgba(221,0,49,.3)}
+
+footer{padding:28px 52px;border-top:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:11px;color:var(--txt3)}
+footer a{color:var(--red);text-decoration:none}
+@media(max-width:600px){footer{padding:20px 24px}}
+</style>
+</head>
+<body>
+<div class="pb"><div class="pb-fill" id="prog"></div></div>
+<div id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593;</div>
+
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-orb o1"></div><div class="hero-orb o2"></div><div class="hero-orb o3"></div>
+  <div class="hero-inner">
+    <div class="eyebrow">angular.dev/style-guide &middot; Fully Audited &middot; 2026</div>
+    <div class="hero-title"><span class="ang">Angular</span> Ultimate<br>Architecture <span class="dim">2026</span></div>
+    <div class="hero-sub">The definitive reference &mdash; <strong>audited against the official style guide</strong> and Angular v20/v21. Includes the v20 naming revolution, three scale tiers, testing, CLI reference, performance checklist, migration guide, and the 10 most common mistakes.</div>
+    <div class="htags">
+      <span class="htag ht-red">&#9889; v20 / v21</span>
+      <span class="htag ht-ylw">&#9711; No Type Suffixes</span>
+      <span class="htag ht-blue">&#8853; Signals Stable</span>
+      <span class="htag ht-grn">&#8862; Standalone</span>
+      <span class="htag ht-pur">&#8865; NgRx Signal Store</span>
+      <span class="htag ht-cyn">&#8859; Zoneless Preview</span>
+      <span class="htag ht-org">&#8853; SSR + Hydration</span>
+      <span class="htag ht-pnk">&#10022; 3 Scale Tiers</span>
+    </div>
+  </div>
+</div>
+
+<nav class="nav" id="mainnav">
+  <a class="ni active" href="#naming">&#128293; Naming Change</a>
+  <a class="ni" href="#structure">&#128193; Structure</a>
+  <a class="ni" href="#core">&#128274; Core</a>
+  <a class="ni" href="#shared">&#128311; Shared</a>
+  <a class="ni" href="#features">&#128640; Features</a>
+  <a class="ni" href="#layout">&#128759; Layout</a>
+  <a class="ni" href="#naming-ref">&#128203; Naming Ref</a>
+  <a class="ni" href="#patterns">&#9889; Patterns</a>
+  <a class="ni" href="#state">&#128440; State</a>
+  <a class="ni" href="#testing">&#129514; Testing</a>
+  <a class="ni" href="#cli">&#9000; CLI</a>
+  <a class="ni" href="#perf">&#128293; Perf</a>
+  <a class="ni" href="#migration">&#128260; Migration</a>
+  <a class="ni" href="#mistakes">&#10060; Mistakes</a>
+  <a class="ni" href="#rules">&#128208; Rules</a>
+</nav>
+
+<div class="content">
+
+<section class="sec" id="naming">
+  <div class="sec-head">
+    <div class="sec-icon" style="background:rgba(221,0,49,.1)">&#128293;</div>
+    <div>
+      <div class="sec-title" style="color:var(--red)">The Angular v20 Naming Revolution</div>
+      <div class="sec-desc">The biggest convention shift in Angular history. File names and class names no longer use type suffixes. Know this before everything else.</div>
+    </div>
+  </div>
+
+  <div class="co co-fix">
+    <div class="co-t">&#9888;&#65039; Most guides are still showing the OLD convention</div>
+    <p><code>.component.ts</code>, <code>UserProfileComponent</code>, <code>HeroService</code> are <strong>pre-v20 patterns</strong>. Angular CLI v20 now generates <code>user-profile.ts</code> with class <code>UserProfile</code> by default. This guide uses the new convention throughout.</p>
+  </div>
+
+  <div class="tw" style="margin-bottom:20px">
+    <table>
+      <thead><tr><th>Type</th><th>&#10060; Old File (v19&minus;)</th><th>&#9989; New File (v20+)</th><th>&#10060; Old Class</th><th>&#9989; New Class</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td class="td-t">Component</td><td><span class="td-old">user-list.component.ts</span></td><td><span class="td-new">user-list.ts</span></td><td><span class="td-old">UserListComponent</span></td><td><span class="td-new">UserList</span></td><td class="td-n">Name = behavior</td></tr>
+        <tr><td class="td-t">Template</td><td><span class="td-old">user-list.component.html</span></td><td><span class="td-new">user-list.html</span></td><td>&mdash;</td><td>&mdash;</td><td class="td-n">Same base name</td></tr>
+        <tr><td class="td-t">Styles</td><td><span class="td-old">user-list.component.scss</span></td><td><span class="td-new">user-list.scss</span></td><td>&mdash;</td><td>&mdash;</td><td class="td-n">Same base name</td></tr>
+        <tr><td class="td-t">Service</td><td><span class="td-old">auth.service.ts</span></td><td><span class="td-new">auth.ts</span> or <span class="td-new">auth-client.ts</span></td><td><span class="td-old">AuthService</span></td><td><span class="td-new">Auth / AuthClient</span></td><td class="td-n">Use domain role name</td></tr>
+        <tr><td class="td-t">Directive</td><td><span class="td-old">tooltip.directive.ts</span></td><td><span class="td-new">tooltip.ts</span></td><td><span class="td-old">TooltipDirective</span></td><td><span class="td-new">Tooltip</span></td><td class="td-n">No Directive suffix</td></tr>
+        <tr><td class="td-t" style="color:var(--pnk)">Pipe &#9888;&#65039;</td><td><span class="td-old">date.pipe.ts</span></td><td><span class="td-new">date-pipe.ts</span></td><td><span style="color:var(--pnk)">DatePipe (KEPT)</span></td><td><span style="color:var(--pnk)">DatePipe (KEPT)</span></td><td class="td-n">Pipe suffix kept. Sep: <code>-</code></td></tr>
+        <tr><td class="td-t" style="color:var(--pnk)">NgModule &#9888;&#65039;</td><td><span style="color:var(--pnk)">app.module.ts</span></td><td><span style="color:var(--pnk)">app.module.ts</span></td><td><span style="color:var(--pnk)">AppModule (KEPT)</span></td><td><span style="color:var(--pnk)">AppModule (KEPT)</span></td><td class="td-n">Legacy</td></tr>
+        <tr><td class="td-t">Guard</td><td><span class="td-old">auth.guard.ts</span></td><td><span class="td-new">auth.guard.ts</span></td><td><span class="td-old">AuthGuard (class)</span></td><td><span class="td-new">authGuard (fn)</span></td><td class="td-n">File unchanged; class&rarr;fn</td></tr>
+        <tr><td class="td-t">Unit test</td><td><span class="td-old">hero.component.spec.ts</span></td><td><span class="td-new">hero.spec.ts</span></td><td>&mdash;</td><td>&mdash;</td><td class="td-n">.spec always kept</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="co co-tip">
+    <div class="co-t">&#128161; Why did Angular change this?</div>
+    <p>The Angular team: <strong>"A class name should reflect its behavior and responsibilities, not how it is used."</strong> <code>UsersApi</code> tells you far more than <code>UserService</code>. IDEs are powerful enough to identify file roles without name-encoded suffixes. Opt back in via <code>angular.json</code> schematics if your team prefers the old style &mdash; consistency within your codebase matters more than which convention you use.</p>
+  </div>
+
+  <div class="cmp">
+    <div>
+      <div class="rule r-ol">&#10060; Old pattern (pre-v20)</div>
+      <div class="cb">
+        <div class="cb-head"><div class="cb-lang"><span style="color:var(--blue)">TS</span> auth.service.ts</div><button class="cb-copy" onclick="cpCode(this)">copy</button></div>
+<pre><code><span class="dec">@Injectable</span>({ <span class="pr">providedIn</span>: <span class="str">'root'</span> })
+<span class="kw">export class</span> <span class="tp">AuthService</span> {
+  <span class="kw">constructor</span>(<span class="kw">private</span> http: <span class="tp">HttpClient</span>) {}
+  <span class="fn">login</span>(email: <span class="kw">string</span>, pw: <span class="kw">string</span>) {
+    <span class="kw">return</span> <span class="kw">this</span>.http.<span class="fn">post</span>(<span class="str">'/auth/login'</span>, { email, pw });
+  }
+}</code></pre>
+      </div>
+    </div>
+    <div>
+      <div class="rule r-do">&#9989; New pattern (Angular v20+)</div>
+      <div class="cb">
+        <div class="cb-head"><div class="cb-lang"><span style="color:var(--blue)">TS</span> auth.ts &mdash; class: Auth</div><button class="cb-copy" onclick="cpCode(this)">copy</button></div>
+<pre><code><span class="dec">@Injectable</span>({ <span class="pr">providedIn</span>: <span class="str">'root'</span> })
+<span class="kw">export class</span> <span class="tp">Auth</span> { <span class="cm">// &#9989; no "Service" suffix</span>
+  <span class="kw">private readonly</span> http = <span class="fn">inject</span>(<span class="tp">HttpClient</span>);
+  <span class="fn">login</span>(email: <span class="kw">string</span>, pw: <span class="kw">string</span>) {
+    <span class="kw">return</span> <span class="kw">this</span>.http.<span class="fn">post</span>(<span class="str">'/auth/login'</span>, { email, pw });
+  }
+}</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="structure">
+  <div class="sec-head">
+    <div class="sec-icon" style="background:rgba(79,158,255,.1)">&#128193;</div>
+    <div>
+      <div class="sec-title">Project Structure by Scale</div>
+      <div class="sec-desc">Pick the tier that matches your team size today. The right structure depends on complexity &mdash; over-engineering a small project is just as harmful as under-engineering a large one.</div>
+    </div>
+  </div>
+
+  <div class="size-toggle">
+    <button class="st-btn active" onclick="setSize('small',this)">&#9679; Small</button>
+    <button class="st-btn" onclick="setSize('medium',this)">&#9679; Medium</button>
+    <button class="st-btn" onclick="setSize('enterprise',this)">&#9679; Enterprise</button>
+  </div>
+
+  <div class="sz active" id="sz-small">
+    <div class="co co-info" style="margin-bottom:20px">
+      <div class="co-t"><span class="sbadge sb-sm">Small</span> &nbsp;1&ndash;3 devs &middot; side project &middot; startup MVP &middot; &lt;10 features</div>
+      <p>Flat, minimal nesting. No <code>core/</code> or <code>layout/</code> separation until you need them. Organize by feature folder. Focus on shipping. Refactor toward medium when files start getting hard to navigate.</p>
+    </div>
+    <div class="g2">
+      <div class="tree-wrap">
+        <div class="tree-bar"><div class="tree-bar-l"><div class="tdots"><div class="td td-r"></div><div class="td td-y"></div><div class="td td-g"></div></div><span class="tlabel">src/app/ &mdash; small project</span></div><span class="sbadge sb-sm">1&ndash;3 devs</span></div>
+        <div class="tree-body">
+          <div class="tl"><span class="tc">&#128193; </span><span class="tn f">app/</span></div>
+          <div class="ti">
+            <div class="tl tl-tog open" onclick="tog(this)"><span class="arrow">&#9658;</span><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">auth/</span><span class="tcm">login + register pages</span></div>
+            <div class="coll open ti">
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">login/</span></div>
+              <div class="ti"><div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">login.ts</span><span class="tcm">class: Login</span></div><div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn htm">login.html</span></div></div>
+              <div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn ts">auth.guard.ts</span><span class="tcm">fn: authGuard</span></div>
+            </div>
+            <div class="tl tl-tog open" onclick="tog(this)"><span class="arrow">&#9658;</span><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">dashboard/</span></div>
+            <div class="coll open ti">
+              <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">dashboard.ts</span><span class="tcm">class: Dashboard</span></div>
+              <div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn htm">dashboard.html</span></div>
+            </div>
+            <div class="tl tl-tog open" onclick="tog(this)"><span class="arrow">&#9658;</span><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">products/</span></div>
+            <div class="coll open ti">
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">product-list/</span></div>
+              <div class="ti"><div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">product-list.ts</span></div><div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn htm">product-list.html</span></div></div>
+              <div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn ts">products-api.ts</span><span class="tcm">class: ProductsApi</span></div>
+            </div>
+            <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">shared/</span><span class="tcm">only when reused 2+ places</span></div>
+            <div class="ti"><div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">button/</span></div><div class="tl"><span class="tc">&#9492;&#9472; &#128193; </span><span class="tn f">spinner/</span></div></div>
+            <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">app.ts</span><span class="tcm">class: App</span></div>
+            <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">app.config.ts</span></div>
+            <div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn ts">app.routes.ts</span></div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card"><div class="card-title" style="color:var(--grn)">Small Project Rules</div><ul>
+          <li>Organize by <strong>feature folder</strong>, not file type</li>
+          <li>Skip <code>core/</code> and <code>layout/</code> until needed</li>
+          <li>One <code>app.routes.ts</code> is fine for &lt;10 routes</li>
+          <li><strong>Don't pre-optimize</strong> &mdash; flat beats nested when small</li>
+          <li>Add <code>shared/</code> only when 2+ features need it</li>
+          <li>Services live in their own feature folder</li>
+          <li>Still always use <code>OnPush</code> + <code>standalone: true</code></li>
+        </ul></div>
+        <div class="cb"><div class="cb-head"><div class="cb-lang"><span style="color:var(--blue)">TS</span> app.routes.ts &mdash; simple, inline lazy</div><button class="cb-copy" onclick="cpCode(this)">copy</button></div>
+<pre><code><span class="kw">export const</span> <span class="fn">APP_ROUTES</span>: <span class="tp">Routes</span> = [
+  { <span class="pr">path</span>: <span class="str">''</span>, <span class="pr">redirectTo</span>: <span class="str">'dashboard'</span>, <span class="pr">pathMatch</span>: <span class="str">'full'</span> },
+  {
+    <span class="pr">path</span>: <span class="str">'auth/login'</span>,
+    <span class="pr">loadComponent</span>: () =>
+      <span class="fn">import</span>(<span class="str">'./auth/login/login'</span>).<span class="fn">then</span>(m => m.<span class="tp">Login</span>)
+  },
+  {
+    <span class="pr">path</span>: <span class="str">'dashboard'</span>,
+    <span class="pr">loadComponent</span>: () =>
+      <span class="fn">import</span>(<span class="str">'./dashboard/dashboard'</span>).<span class="fn">then</span>(m => m.<span class="tp">Dashboard</span>),
+    <span class="pr">canActivate</span>: [authGuard]
+  },
+  { <span class="pr">path</span>: <span class="str">'**'</span>, <span class="pr">redirectTo</span>: <span class="str">'auth/login'</span> }
+];</code></pre></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sz" id="sz-medium">
+    <div class="co co-info" style="margin-bottom:20px">
+      <div class="co-t"><span class="sbadge sb-md">Medium</span> &nbsp;2&ndash;10 devs &middot; product team &middot; 10&ndash;30 features</div>
+      <p>Introduce <code>core/</code> for singletons, <code>shared/</code> for reusables, <code>layout/</code> for shell, and <code>features/</code> for lazy vertical slices. Each feature has its own routes file. This is the sweet spot for most real-world Angular apps.</p>
+    </div>
+    <div class="g2">
+      <div class="tree-wrap">
+        <div class="tree-bar"><div class="tree-bar-l"><div class="tdots"><div class="td td-r"></div><div class="td td-y"></div><div class="td td-g"></div></div><span class="tlabel">src/app/ &mdash; medium project</span></div><span class="sbadge sb-md">2&ndash;10 devs</span></div>
+        <div class="tree-body">
+          <div class="tl"><span class="tc">&#128193; </span><span class="tn f">app/</span></div>
+          <div class="ti">
+            <div class="tl tl-tog open" onclick="tog(this)"><span class="arrow">&#9658;</span><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">core/</span><span class="tag t-single">Singleton</span></div>
+            <div class="coll open ti">
+              <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">auth.ts</span><span class="tcm">Auth singleton</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">auth.guard.ts</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">auth.interceptor.ts</span></div>
+              <div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn ts">core.providers.ts</span></div>
+            </div>
+            <div class="tl tl-tog open" onclick="tog(this)"><span class="arrow">&#9658;</span><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">shared/</span><span class="tag t-shared">Reusable</span></div>
+            <div class="coll open ti">
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">button/</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">modal/</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">spinner/</span></div>
+              <div class="tl"><span class="tc">&#9492;&#9472; &#128193; </span><span class="tn f">pipes/</span><span class="tcm">date-pipe.ts, truncate-pipe.ts</span></div>
+            </div>
+            <div class="tl tl-tog open" onclick="tog(this)"><span class="arrow">&#9658;</span><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">layout/</span></div>
+            <div class="coll open ti">
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">main-layout/</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">auth-layout/</span></div>
+              <div class="tl"><span class="tc">&#9492;&#9472; &#128193; </span><span class="tn f">header/</span></div>
+            </div>
+            <div class="tl tl-tog open" onclick="tog(this)"><span class="arrow">&#9658;</span><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">features/</span><span class="tag t-lazy">Lazy</span></div>
+            <div class="coll open ti">
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">dashboard/</span><span class="tcm">pages + api + store</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">users/</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">products/</span></div>
+              <div class="tl"><span class="tc">&#9492;&#9472; &#128193; </span><span class="tn f">settings/</span></div>
+            </div>
+            <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">app.ts</span></div>
+            <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">app.config.ts</span></div>
+            <div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn ts">app.routes.ts</span></div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card"><div class="card-title" style="color:var(--blue)">Medium Project Rules</div><ul>
+          <li><code>core/</code> = singletons only (<code>providedIn:'root'</code>)</li>
+          <li><code>shared/</code> = dumb components &amp; pipes, zero business logic</li>
+          <li><code>features/</code> = isolated vertical slices, lazy-loaded</li>
+          <li>Each feature owns: routes + store + api + models</li>
+          <li>Features <strong>never import from each other</strong></li>
+          <li>Layout components used as route parent wrappers</li>
+        </ul></div>
+        <div class="tree-wrap">
+          <div class="tree-bar"><div class="tree-bar-l"><div class="tdots"><div class="td td-r"></div><div class="td td-y"></div><div class="td td-g"></div></div><span class="tlabel">features/users/ anatomy</span></div></div>
+          <div class="tree-body">
+            <div class="tl"><span class="tc">&#128193; </span><span class="tn f">users/</span></div>
+            <div class="ti">
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">user-list/</span><span class="tcm">routable page</span></div>
+              <div class="ti"><div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">user-list.ts</span></div><div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn htm">user-list.html</span></div><div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn spc">user-list.spec.ts</span></div></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">user-detail/</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">user-card/</span><span class="tcm">child component</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">users-api.ts</span><span class="tcm">class: UsersApi</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">users.store.ts</span><span class="tcm">NgRx Signal Store</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">user.models.ts</span></div>
+              <div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn ts">users.routes.ts</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sz" id="sz-enterprise">
+    <div class="co co-fix" style="margin-bottom:20px">
+      <div class="co-t"><span class="sbadge sb-en">Enterprise</span> &nbsp;10+ devs &middot; multiple teams &middot; 30+ features &middot; strict boundaries</div>
+      <p>Nx monorepo with <code>libs/</code>. Each domain team owns a library. Enforced import boundaries via ESLint. Features can never directly reference each other &mdash; they only communicate through store/events or shared libs.</p>
+    </div>
+    <div class="g2">
+      <div class="tree-wrap">
+        <div class="tree-bar"><div class="tree-bar-l"><div class="tdots"><div class="td td-r"></div><div class="td td-y"></div><div class="td td-g"></div></div><span class="tlabel">Nx Monorepo</span></div><span class="sbadge sb-en">10+ devs</span></div>
+        <div class="tree-body">
+          <div class="tl"><span class="tc">&#128193; </span><span class="tn f">my-workspace/ (Nx)</span></div>
+          <div class="ti">
+            <div class="tl tl-tog open" onclick="tog(this)"><span class="arrow">&#9658;</span><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">apps/</span></div>
+            <div class="coll open ti">
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">admin-portal/</span></div>
+              <div class="tl"><span class="tc">&#9492;&#9472; &#128193; </span><span class="tn f">customer-app/</span></div>
+            </div>
+            <div class="tl tl-tog open" onclick="tog(this)"><span class="arrow">&#9658;</span><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">libs/</span><span class="tcm">shared libraries</span></div>
+            <div class="coll open ti">
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">ui/</span><span class="tcm">design system</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">auth/</span><span class="tcm">cross-app auth lib</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">users/</span><span class="tcm">users domain lib</span></div>
+              <div class="tl"><span class="tc">&#9492;&#9472; &#128193; </span><span class="tn f">products/</span></div>
+            </div>
+            <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn jsn">nx.json</span></div>
+            <div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn cfg">.eslintrc.json</span><span class="tcm">import boundary enforcement</span></div>
+          </div>
+          <div style="height:12px"></div>
+          <div class="tl"><span class="tc">&#128193; </span><span class="tn f">apps/admin-portal/src/app/</span></div>
+          <div class="ti">
+            <div class="tl tl-tog open" onclick="tog(this)"><span class="arrow">&#9658;</span><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">core/</span></div>
+            <div class="coll open ti">
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">auth/</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">http/</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">config/</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">error-handling/</span></div>
+              <div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn ts">core.providers.ts</span></div>
+            </div>
+            <div class="tl tl-tog open" onclick="tog(this)"><span class="arrow">&#9658;</span><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">features/</span></div>
+            <div class="coll open ti">
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">dashboard/</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">users/</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">orders/</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">reports/</span></div>
+              <div class="tl"><span class="tc">&#9492;&#9472; &#128193; </span><span class="tn f">settings/</span></div>
+            </div>
+            <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">app.ts</span></div>
+            <div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn ts">app.routes.ts</span></div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card"><div class="card-title" style="color:var(--red)">Enterprise Rules</div><ul>
+          <li>Use Nx workspace for multi-app monorepo</li>
+          <li>Enforce import boundaries: features never import each other</li>
+          <li>ESLint <code>@nx/enforce-module-boundaries</code></li>
+          <li>Extract shared UI to <code>libs/ui</code> design system</li>
+          <li>Facade pattern in feature stores</li>
+          <li>Strict code ownership via <code>CODEOWNERS</code></li>
+          <li>Feature flags via environment config</li>
+        </ul></div>
+        <div class="card"><div class="card-title" style="color:var(--red)">Deep Feature Anatomy (Enterprise)</div><ul>
+          <li><code>feature/pages/</code> &mdash; routable smart containers</li>
+          <li><code>feature/ui/</code> &mdash; presentational, no services</li>
+          <li><code>feature/data-access/</code> &mdash; API calls only</li>
+          <li><code>feature/state/</code> &mdash; Signal Store or NgRx</li>
+          <li><code>feature/models/</code> &mdash; interfaces, enums</li>
+          <li><code>feature/resolvers/</code> &mdash; functional resolvers</li>
+          <li><code>feature/feature.routes.ts</code></li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="core">
+  <div class="sec-head">
+    <div class="sec-icon" style="background:rgba(221,0,49,.1)">&#128274;</div>
+    <div>
+      <div class="sec-title" style="color:var(--red)">core/ &mdash; The Singleton Layer</div>
+      <div class="sec-desc">App-wide cross-cutting concerns only. No feature logic. Everything uses <code>providedIn:'root'</code>. Guards and interceptors are functional (not class-based).</div>
+    </div>
+  </div>
+
+  <div class="co co-warn">
+    <div class="co-t">&#128208; Sacred Rule for core/</div>
+    <p><strong>Nothing in <code>core/</code> imports from <code>features/</code></strong>. This is a one-way dependency. Core knows nothing about features; features know about core. Violating this causes circular dependency build errors.</p>
+  </div>
+
+  <div class="g2">
+    <div class="tree-wrap">
+      <div class="tree-bar"><div class="tree-bar-l"><div class="tdots"><div class="td td-r"></div><div class="td td-y"></div><div class="td td-g"></div></div><span class="tlabel">core/ &mdash; medium/enterprise</span></div></div>
+      <div class="tree-body">
+        <div class="tl"><span class="tc">&#128193; </span><span class="tn f">core/</span></div>
+        <div class="ti">
+          <div class="tl tl-tog open" onclick="tog(this)"><span class="arrow">&#9658;</span><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">auth/</span></div>
+          <div class="coll open ti">
+            <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">auth.ts</span><span class="tcm">class: Auth</span></div>
+            <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn spc">auth.spec.ts</span></div>
+            <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">auth.guard.ts</span><span class="tcm">fn: authGuard</span></div>
+            <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">auth.interceptor.ts</span><span class="tcm">fn: authInterceptor</span></div>
+            <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">auth.store.ts</span><span class="tcm">SignalStore: AuthStore</span></div>
+            <div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn ts">auth.models.ts</span></div>
+          </div>
+          <div class="tl tl-tog open" onclick="tog(this)"><span class="arrow">&#9658;</span><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">http/</span></div>
+          <div class="coll open ti">
+            <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">api-client.ts</span><span class="tcm">class: ApiClient</span></div>
+            <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">error.interceptor.ts</span></div>
+            <div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn ts">loading.interceptor.ts</span></div>
+          </div>
+          <div class="tl tl-tog" onclick="tog(this)"><span class="arrow">&#9658;</span><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">config/</span></div>
+          <div class="coll ti"><div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn ts">app-config.token.ts</span></div></div>
+          <div class="tl tl-tog" onclick="tog(this)"><span class="arrow">&#9658;</span><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">seo/</span></div>
+          <div class="coll ti"><div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn ts">seo.ts</span><span class="tcm">class: Seo</span></div></div>
+          <div class="tl tl-tog" onclick="tog(this)"><span class="arrow">&#9658;</span><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">analytics/</span></div>
+          <div class="coll ti"><div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn ts">analytics.ts</span><span class="tcm">class: Analytics</span></div></div>
+          <div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn ts">core.providers.ts</span></div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="cb">
+        <div class="cb-head"><div class="cb-lang"><span style="color:var(--blue)">TS</span> auth.interceptor.ts &mdash; functional</div><button class="cb-copy" onclick="cpCode(this)">copy</button></div>
+<pre><code><span class="kw">import</span> { <span class="im">HttpInterceptorFn</span> } <span class="kw">from</span> <span class="str">'@angular/common/http'</span>;
+
+<span class="kw">export const</span> <span class="fn">authInterceptor</span>: <span class="tp">HttpInterceptorFn</span> =
+  (req, next) => {
+    <span class="kw">const</span> token = <span class="fn">inject</span>(<span class="tp">Auth</span>).<span class="fn">getToken</span>();
+    <span class="kw">if</span> (!token) <span class="kw">return</span> <span class="fn">next</span>(req);
+    <span class="kw">return</span> <span class="fn">next</span>(req.<span class="fn">clone</span>({
+      <span class="pr">headers</span>: req.headers
+        .<span class="fn">set</span>(<span class="str">'Authorization'</span>, <span class="str">`Bearer ${token}`</span>)
+    }));
+  };</code></pre>
+      </div>
+      <div class="cb">
+        <div class="cb-head"><div class="cb-lang"><span style="color:var(--blue)">TS</span> app.config.ts &mdash; provideZonelessChangeDetection</div><span class="tag t-new">v20+</span></div>
+<pre><code><span class="kw">import</span> { <span class="im">provideZonelessChangeDetection</span> }
+  <span class="kw">from</span> <span class="str">'@angular/core'</span>;
+<span class="cm">// &#9989; renamed from provideExperimentalZoneless in v20</span>
+
+<span class="kw">export const</span> <span class="fn">appConfig</span>: <span class="tp">ApplicationConfig</span> = {
+  providers: [
+    <span class="fn">provideZonelessChangeDetection</span>(),
+    <span class="fn">provideRouter</span>(APP_ROUTES,
+      <span class="fn">withComponentInputBinding</span>(),
+      <span class="fn">withViewTransitions</span>()
+    ),
+    <span class="fn">provideHttpClient</span>(
+      <span class="fn">withInterceptors</span>([authInterceptor]),
+      <span class="fn">withFetch</span>()
+    ),
+    <span class="fn">provideAnimationsAsync</span>(),
+    <span class="fn">provideClientHydration</span>(<span class="fn">withEventReplay</span>()),
+  ],
+};</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="shared">
+  <div class="sec-head">
+    <div class="sec-icon" style="background:rgba(34,211,238,.1)">&#128311;</div>
+    <div>
+      <div class="sec-title" style="color:var(--cyn)">shared/ &mdash; Dumb, Pure, No Business Logic</div>
+      <div class="sec-desc">Organized by concept, never by type. No <code>components/</code>, <code>directives/</code>, or <code>pipes/</code> sub-folders &mdash; that's the official style guide rule.</div>
+    </div>
+  </div>
+  <div class="co co-warn" style="margin-bottom:0">
+    <div class="co-t">&#128218; Official Style Guide Rule &mdash; What It Actually Means</div>
+    <p><strong>"Avoid creating subdirectories based on the type of code that lives in those directories. For example, avoid creating directories like components, directives, and services."</strong> &mdash; <a href="https://angular.dev/style-guide">angular.dev/style-guide</a></p>
+  </div>
+
+  <div style="background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rad);padding:22px 24px;margin-bottom:20px">
+    <div style="font-family:var(--sans);font-size:14px;font-weight:700;color:var(--txt);margin-bottom:12px">&#129504; The Mental Model: Group by <em>what changes together</em>, not by <em>what kind of thing it is</em></div>
+    <p style="font-size:12px;color:var(--txt2);line-height:1.75;margin-bottom:14px">
+      When you build a <strong style="color:var(--txt)">User List</strong> feature, it needs a component, a service, maybe a directive and a pipe. If you put each of those into separate type-based folders, changing anything about the User List feature means touching four different directories. <strong style="color:var(--ylw)">The files that change together don't live together.</strong>
+    </p>
+    <p style="font-size:12px;color:var(--txt2);line-height:1.75;margin-bottom:14px">
+      The rule is about <strong style="color:var(--txt)">cohesion</strong>. A folder should answer the question <em>"what does this do?"</em>, not <em>"what Angular artifact type is this?"</em>. Angular doesn't care what folder your files are in &mdash; but developers scrolling a file tree absolutely do.
+    </p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:14px">
+      <div>
+        <div class="rule r-dn" style="margin-bottom:8px">&#10060; Type-based (what Angular tutorials used to teach)</div>
+        <div class="tree-wrap">
+          <div class="tree-body">
+            <div class="tl"><span class="tc">&#128193; </span><span class="tn f">components/</span></div>
+            <div class="ti">
+              <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">user-list.ts</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">user-detail.ts</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">product-list.ts</span></div>
+            </div>
+            <div class="tl"><span class="tc">&#128193; </span><span class="tn f">services/</span></div>
+            <div class="ti">
+              <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">users-api.ts</span></div>
+              <div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn ts">products-api.ts</span></div>
+            </div>
+            <div class="tl"><span class="tc">&#128193; </span><span class="tn f">pipes/</span></div>
+            <div class="ti">
+              <div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn ts">date-format-pipe.ts</span></div>
+            </div>
+          </div>
+        </div>
+        <p style="font-size:10.5px;color:var(--red);margin-top:8px;line-height:1.5">&#9888; To understand the "users" feature you must jump between 3 folders. Deleting the users feature requires hunting across the whole tree.</p>
+      </div>
+      <div>
+        <div class="rule r-do" style="margin-bottom:8px">&#9989; Concept-based (official style guide)</div>
+        <div class="tree-wrap">
+          <div class="tree-body">
+            <div class="tl"><span class="tc">&#128193; </span><span class="tn f">users/</span><span class="tcm">everything users in one place</span></div>
+            <div class="ti">
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">user-list/</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">user-detail/</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">users-api.ts</span></div>
+            </div>
+            <div class="tl"><span class="tc">&#128193; </span><span class="tn f">products/</span><span class="tcm">everything products in one place</span></div>
+            <div class="ti">
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">product-list/</span></div>
+              <div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn ts">products-api.ts</span></div>
+            </div>
+            <div class="tl"><span class="tc">&#128193; </span><span class="tn f">shared/</span></div>
+            <div class="ti"><div class="tl"><span class="tc">&#9492;&#9472; &#128193; </span><span class="tn f">pipes/</span><span class="tcm">pipes CAN group here</span></div></div>
+          </div>
+        </div>
+        <p style="font-size:10.5px;color:var(--grn);margin-top:8px;line-height:1.5">&#9989; The entire "users" feature is one folder. Delete users? Delete one folder. New dev reads "users"? One folder to understand.</p>
+      </div>
+    </div>
+    <div style="background:var(--sur2);border:1px solid var(--bdr);border-radius:5px;padding:12px 16px">
+      <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--cyn);margin-bottom:6px">&#128161; The Exception: pipes/ is still acceptable as a grouping in shared/</div>
+      <p style="font-size:11.5px;color:var(--txt2);line-height:1.6">Pipes are a special case because they are <strong style="color:var(--txt)">stateless transformation utilities</strong> &mdash; pure functions with no UI and no feature-specific logic. A <code>date-format-pipe.ts</code> doesn't belong to any feature. Grouping pipes by type inside <code>shared/pipes/</code> is pragmatic and widely accepted. The rule is really about <em>feature code</em>: don't scatter a feature's component, service, and directive across three separate type-named folders.</p>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="tree-wrap">
+      <div class="tree-bar"><div class="tree-bar-l"><div class="tdots"><div class="td td-r"></div><div class="td td-y"></div><div class="td td-g"></div></div><span class="tlabel">shared/ &mdash; concept-based</span></div></div>
+      <div class="tree-body">
+        <div class="tl"><span class="tc">&#128193; </span><span class="tn f">shared/</span></div>
+        <div class="ti">
+          <div class="tl tl-tog open" onclick="tog(this)"><span class="arrow">&#9658;</span><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">button/</span></div>
+          <div class="coll open ti">
+            <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">button.ts</span><span class="tcm">class: Button</span></div>
+            <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn htm">button.html</span></div>
+            <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn scs">button.scss</span></div>
+            <div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn spc">button.spec.ts</span></div>
+          </div>
+          <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">modal/</span><span class="tcm">class: Modal</span></div>
+          <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">spinner/</span></div>
+          <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">tooltip/</span><span class="tcm">class: Tooltip (directive)</span></div>
+          <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">data-table/</span></div>
+          <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">empty-state/</span></div>
+          <div class="tl tl-tog" onclick="tog(this)"><span class="arrow">&#9658;</span><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">pipes/</span><span class="tcm">still ok to group here</span></div>
+          <div class="coll ti">
+            <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">date-format-pipe.ts</span><span class="tcm">DateFormatPipe &#9888;&#65039; exception</span></div>
+            <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">truncate-pipe.ts</span></div>
+            <div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn ts">money-pipe.ts</span></div>
+          </div>
+          <div class="tl tl-tog" onclick="tog(this)"><span class="arrow">&#9658;</span><span class="tc">&#9492;&#9472; &#128193; </span><span class="tn f">models/</span><span class="tcm">cross-feature interfaces</span></div>
+          <div class="coll ti">
+            <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">pagination.ts</span></div>
+            <div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn ts">api-response.ts</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="cb">
+        <div class="cb-head"><div class="cb-lang"><span style="color:var(--blue)">TS</span> button.ts &mdash; class: Button (not ButtonComponent)</div><button class="cb-copy" onclick="cpCode(this)">copy</button></div>
+<pre><code><span class="dec">@Component</span>({
+  <span class="pr">selector</span>: <span class="str">'app-button'</span>,
+  <span class="pr">standalone</span>: <span class="kw">true</span>,
+  <span class="pr">changeDetection</span>: ChangeDetectionStrategy.<span class="pr">OnPush</span>,
+})
+<span class="kw">export class</span> <span class="tp">Button</span> { <span class="cm">// &#9989; no "Component" suffix</span>
+  <span class="kw">readonly</span> <span class="pr">variant</span> = <span class="fn">input</span>&lt;<span class="str">'primary'</span>|<span class="str">'secondary'</span>&gt;(<span class="str">'primary'</span>);
+  <span class="kw">readonly</span> <span class="pr">loading</span> = <span class="fn">input</span>(<span class="kw">false</span>);
+  <span class="kw">readonly</span> <span class="pr">clicked</span> = <span class="fn">output</span>&lt;<span class="kw">void</span>&gt;();
+  <span class="cm">// &#9989; protected = template-only (style guide rule)</span>
+  <span class="kw">protected readonly</span> <span class="pr">isDisabled</span> = <span class="fn">computed</span>(
+    () => <span class="kw">this</span>.<span class="fn">loading</span>()
+  );
+}</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="features">
+  <div class="sec-head">
+    <div class="sec-icon" style="background:rgba(192,132,252,.1)">&#128640;</div>
+    <div>
+      <div class="sec-title" style="color:var(--pur)">features/ &mdash; Vertical Slices</div>
+      <div class="sec-desc">Each feature is a completely isolated vertical slice. Lazy-loaded via router. Contains everything it needs.</div>
+    </div>
+  </div>
+  <div class="g3">
+    <div class="tree-wrap">
+      <div class="tree-bar"><div class="tree-bar-l"><div class="tdots"><div class="td td-r"></div><div class="td td-y"></div><div class="td td-g"></div></div><span class="tlabel">features/users/</span></div></div>
+      <div class="tree-body">
+        <div class="tl"><span class="tc">&#128193; </span><span class="tn f">users/</span></div>
+        <div class="ti">
+          <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">user-list/</span><span class="tcm">routable page</span></div>
+          <div class="ti"><div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">user-list.ts</span><span class="tcm">class: UserList</span></div><div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn htm">user-list.html</span></div><div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn spc">user-list.spec.ts</span></div></div>
+          <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">user-detail/</span><span class="tcm">routable page</span></div>
+          <div class="ti"><div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">user-detail.ts</span><span class="tcm">class: UserDetail</span></div><div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn htm">user-detail.html</span></div></div>
+          <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">user-card/</span><span class="tcm">child component</span></div>
+          <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">users-api.ts</span><span class="tcm">class: UsersApi</span></div>
+          <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">users.store.ts</span></div>
+          <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">user.models.ts</span></div>
+          <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">user-detail.resolver.ts</span></div>
+          <div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn ts">users.routes.ts</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="tree-wrap">
+      <div class="tree-bar"><div class="tree-bar-l"><div class="tdots"><div class="td td-r"></div><div class="td td-y"></div><div class="td td-g"></div></div><span class="tlabel">features/auth/</span></div></div>
+      <div class="tree-body">
+        <div class="tl"><span class="tc">&#128193; </span><span class="tn f">auth/</span></div>
+        <div class="ti">
+          <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">login/</span></div>
+          <div class="ti"><div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">login.ts</span><span class="tcm">class: Login</span></div><div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn htm">login.html</span></div></div>
+          <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">register/</span></div>
+          <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">forgot-password/</span></div>
+          <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">auth-form/</span><span class="tcm">shared child</span></div>
+          <div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn ts">auth.routes.ts</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="cb" style="align-self:start">
+      <div class="cb-head"><div class="cb-lang"><span style="color:var(--blue)">TS</span> users.routes.ts &mdash; loadComponent</div><button class="cb-copy" onclick="cpCode(this)">copy</button></div>
+<pre><code><span class="kw">export const</span> <span class="fn">USERS_ROUTES</span>: <span class="tp">Routes</span> = [
+  {
+    <span class="pr">path</span>: <span class="str">''</span>,
+    <span class="pr">loadComponent</span>: () =>
+      <span class="fn">import</span>(<span class="str">'./user-list/user-list'</span>)
+        .<span class="fn">then</span>(m => m.<span class="tp">UserList</span>),
+  },
+  {
+    <span class="pr">path</span>: <span class="str">':id'</span>,
+    <span class="pr">loadComponent</span>: () =>
+      <span class="fn">import</span>(<span class="str">'./user-detail/user-detail'</span>)
+        .<span class="fn">then</span>(m => m.<span class="tp">UserDetail</span>),
+    <span class="pr">resolve</span>: { <span class="pr">user</span>: userDetailResolver },
+  },
+];</code></pre>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="layout">
+  <div class="sec-head">
+    <div class="sec-icon" style="background:rgba(52,211,153,.1)">&#128759;</div>
+    <div>
+      <div class="sec-title" style="color:var(--grn)">layout/ &mdash; Shell Components</div>
+      <div class="sec-desc">Persistent chrome: nav, header, sidebar, footer. Used as route parents for auth vs. main authenticated views.</div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="tree-wrap">
+      <div class="tree-bar"><div class="tree-bar-l"><div class="tdots"><div class="td td-r"></div><div class="td td-y"></div><div class="td td-g"></div></div><span class="tlabel">layout/ &mdash; v20+ naming</span></div></div>
+      <div class="tree-body">
+        <div class="tl"><span class="tc">&#128193; </span><span class="tn f">layout/</span></div>
+        <div class="ti">
+          <div class="tl tl-tog open" onclick="tog(this)"><span class="arrow">&#9658;</span><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">main-layout/</span><span class="tcm">authenticated shell</span></div>
+          <div class="coll open ti">
+            <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">main-layout.ts</span><span class="tcm">class: MainLayout</span></div>
+            <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn htm">main-layout.html</span></div>
+            <div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn scs">main-layout.scss</span></div>
+          </div>
+          <div class="tl tl-tog open" onclick="tog(this)"><span class="arrow">&#9658;</span><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">auth-layout/</span><span class="tcm">unauthenticated</span></div>
+          <div class="coll open ti">
+            <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">auth-layout.ts</span><span class="tcm">class: AuthLayout</span></div>
+            <div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn htm">auth-layout.html</span></div>
+          </div>
+          <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">header/</span><span class="tcm">class: Header</span></div>
+          <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">sidebar/</span><span class="tcm">class: Sidebar</span></div>
+          <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">nav/</span></div>
+          <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">breadcrumbs/</span></div>
+          <div class="tl"><span class="tc">&#9492;&#9472; &#128193; </span><span class="tn f">footer/</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="cb">
+      <div class="cb-head"><div class="cb-lang"><span style="color:var(--blue)">TS</span> app.routes.ts &mdash; layout parent pattern</div><button class="cb-copy" onclick="cpCode(this)">copy</button></div>
+<pre><code><span class="kw">export const</span> <span class="fn">APP_ROUTES</span>: <span class="tp">Routes</span> = [
+  {
+    <span class="pr">path</span>: <span class="str">'auth'</span>,
+    <span class="pr">loadComponent</span>: () =>
+      <span class="fn">import</span>(<span class="str">'./layout/auth-layout/auth-layout'</span>)
+        .<span class="fn">then</span>(m => m.<span class="tp">AuthLayout</span>),
+    <span class="pr">loadChildren</span>: () =>
+      <span class="fn">import</span>(<span class="str">'./features/auth/auth.routes'</span>)
+        .<span class="fn">then</span>(m => m.<span class="fn">AUTH_ROUTES</span>),
+  },
+  {
+    <span class="pr">path</span>: <span class="str">''</span>,
+    <span class="pr">loadComponent</span>: () =>
+      <span class="fn">import</span>(<span class="str">'./layout/main-layout/main-layout'</span>)
+        .<span class="fn">then</span>(m => m.<span class="tp">MainLayout</span>),
+    <span class="pr">canActivate</span>: [authGuard],
+    <span class="pr">children</span>: [
+      {
+        <span class="pr">path</span>: <span class="str">'dashboard'</span>,
+        <span class="pr">loadChildren</span>: () =>
+          <span class="fn">import</span>(<span class="str">'./features/dashboard/dashboard.routes'</span>)
+            .<span class="fn">then</span>(m => m.<span class="fn">DASHBOARD_ROUTES</span>),
+      },
+      { <span class="pr">path</span>: <span class="str">''</span>, <span class="pr">redirectTo</span>: <span class="str">'dashboard'</span>, <span class="pr">pathMatch</span>: <span class="str">'full'</span> },
+    ],
+  },
+  { <span class="pr">path</span>: <span class="str">'**'</span>, <span class="pr">redirectTo</span>: <span class="str">'auth/login'</span> },
+];</code></pre>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="naming-ref">
+  <div class="sec-head">
+    <div class="sec-icon" style="background:rgba(251,191,36,.1)">&#128203;</div>
+    <div>
+      <div class="sec-title" style="color:var(--ylw)">Complete Naming Reference &mdash; v20+</div>
+      <div class="sec-desc">Every Angular artifact type with correct v20+ file naming, class naming, test file, and CLI command.</div>
+    </div>
+  </div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Type</th><th>File Name</th><th>Class / Export</th><th>Test File</th><th>CLI Command</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td class="td-t">Component</td><td><span class="td-c">user-list.ts</span></td><td><span class="td-new">UserList</span></td><td><span class="td-c">user-list.spec.ts</span></td><td><span class="td-c">ng g c user-list</span></td><td class="td-n">Name = behavior</td></tr>
+        <tr><td class="td-t">Template</td><td><span class="td-c">user-list.html</span></td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td class="td-n">Same base name, .html</td></tr>
+        <tr><td class="td-t">Styles</td><td><span class="td-c">user-list.scss</span></td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td class="td-n">.css / .scss / .less</td></tr>
+        <tr><td class="td-t">Injectable</td><td><span class="td-c">auth.ts</span></td><td><span class="td-new">Auth</span> or <span class="td-new">AuthClient</span></td><td><span class="td-c">auth.spec.ts</span></td><td><span class="td-c">ng g s auth</span></td><td class="td-n">Use domain role</td></tr>
+        <tr><td class="td-t">Directive</td><td><span class="td-c">click-outside.ts</span></td><td><span class="td-new">ClickOutside</span></td><td><span class="td-c">click-outside.spec.ts</span></td><td><span class="td-c">ng g d click-outside</span></td><td class="td-n">No Directive suffix</td></tr>
+        <tr><td class="td-t" style="color:var(--pnk)">Pipe &#9888;&#65039;</td><td><span class="td-c">date-format-pipe.ts</span></td><td><span style="color:var(--pnk)">DateFormatPipe</span></td><td><span class="td-c">date-format-pipe.spec.ts</span></td><td><span class="td-c">ng g p date-format</span></td><td class="td-n">KEEPS Pipe. Sep: <code>-</code></td></tr>
+        <tr><td class="td-t" style="color:var(--pnk)">NgModule &#9888;&#65039;</td><td><span style="color:var(--pnk)">app.module.ts</span></td><td><span style="color:var(--pnk)">AppModule</span></td><td>&mdash;</td><td>&mdash;</td><td class="td-n">Legacy, kept as-is</td></tr>
+        <tr><td class="td-t">Guard</td><td><span class="td-c">auth.guard.ts</span></td><td><span class="td-new">authGuard</span> (fn)</td><td><span class="td-c">auth.guard.spec.ts</span></td><td><span class="td-c">ng g g auth</span></td><td class="td-n">camelCase function</td></tr>
+        <tr><td class="td-t">Interceptor</td><td><span class="td-c">auth.interceptor.ts</span></td><td><span class="td-new">authInterceptor</span> (fn)</td><td><span class="td-c">auth.interceptor.spec.ts</span></td><td><span class="td-c">ng g interceptor auth</span></td><td class="td-n">HttpInterceptorFn</td></tr>
+        <tr><td class="td-t">Resolver</td><td><span class="td-c">user.resolver.ts</span></td><td><span class="td-new">userResolver</span> (fn)</td><td><span class="td-c">user.resolver.spec.ts</span></td><td><span class="td-c">ng g resolver user</span></td><td class="td-n">ResolveFn</td></tr>
+        <tr><td class="td-t">Interface</td><td><span class="td-c">user.models.ts</span></td><td><span class="td-new">User</span> (no I prefix)</td><td>&mdash;</td><td>&mdash;</td><td class="td-n">interface not class</td></tr>
+        <tr><td class="td-t">Enum</td><td><span class="td-c">user-role.ts</span></td><td><span class="td-new">UserRole</span></td><td>&mdash;</td><td>&mdash;</td><td class="td-n">Members: SCREAMING_SNAKE</td></tr>
+        <tr><td class="td-t">Routes const</td><td><span class="td-c">users.routes.ts</span></td><td><span class="td-new">USERS_ROUTES</span></td><td>&mdash;</td><td>&mdash;</td><td class="td-n">SCREAMING_SNAKE</td></tr>
+        <tr><td class="td-t">Signal Store</td><td><span class="td-c">users.store.ts</span></td><td><span class="td-new">UsersStore</span></td><td><span class="td-c">users.store.spec.ts</span></td><td>&mdash;</td><td class="td-n">signalStore() result</td></tr>
+        <tr><td class="td-t">InjectionToken</td><td><span class="td-c">theme.token.ts</span></td><td><span class="td-new">THEME_TOKEN</span></td><td>&mdash;</td><td>&mdash;</td><td class="td-n">SCREAMING_SNAKE</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="sec" id="patterns">
+  <div class="sec-head">
+    <div class="sec-icon" style="background:rgba(251,191,36,.1)">&#9889;</div>
+    <div>
+      <div class="sec-title" style="color:var(--ylw)">2026 Patterns &mdash; Verified &amp; Accurate</div>
+      <div class="sec-desc">Modern Angular patterns. No invented APIs. Everything here is real and shipped in stable or developer-preview.</div>
+    </div>
+  </div>
+
+  <div class="div">inject() &mdash; Official Recommendation</div>
+  <div class="cmp" style="margin-bottom:24px">
+    <div><div class="rule r-ol">&#10060; Constructor injection</div>
+    <div class="cb"><pre><code><span class="kw">constructor</span>(
+  <span class="kw">private readonly</span> auth: <span class="tp">AuthService</span>,
+  <span class="kw">private readonly</span> router: <span class="tp">Router</span>
+) {}</code></pre></div></div>
+    <div><div class="rule r-do">&#9989; inject() function (official recommendation)</div>
+    <div class="cb"><pre><code><span class="kw">private readonly</span> auth   = <span class="fn">inject</span>(<span class="tp">Auth</span>);
+<span class="kw">private readonly</span> router = <span class="fn">inject</span>(<span class="tp">Router</span>);
+<span class="cm">// &#9989; inline initialization using injected dep</span>
+<span class="kw">readonly</span> me = <span class="fn">toSignal</span>(<span class="fn">inject</span>(<span class="tp">Users</span>).me$);</code></pre></div></div>
+  </div>
+
+  <div class="div">Signals + toSignal() &mdash; Goodbye subscribe()</div>
+  <div class="cmp" style="margin-bottom:24px">
+    <div><div class="rule r-dn">&#10060; Old: subscribe + takeUntil boilerplate</div>
+    <div class="cb"><pre><code><span class="kw">export class</span> <span class="tp">UserListComponent</span>
+  <span class="kw">implements</span> <span class="tp">OnInit</span>, <span class="tp">OnDestroy</span> {
+  users: <span class="tp">User</span>[] = [];
+  <span class="kw">private</span> d$ = <span class="kw">new</span> <span class="tp">Subject</span>();
+
+  <span class="fn">ngOnInit</span>() {
+    <span class="kw">this</span>.svc.<span class="fn">getAll</span>()
+      .<span class="fn">pipe</span>(<span class="fn">takeUntil</span>(<span class="kw">this</span>.d$))
+      .<span class="fn">subscribe</span>(u => <span class="kw">this</span>.users = u);
+  }
+  <span class="fn">ngOnDestroy</span>() {
+    <span class="kw">this</span>.d$.<span class="fn">next</span>(); <span class="kw">this</span>.d$.<span class="fn">complete</span>();
+  }
+}</code></pre></div></div>
+    <div><div class="rule r-do">&#9989; New: Signals + computed (2026)</div>
+    <div class="cb"><pre><code><span class="dec">@Component</span>({ <span class="pr">standalone</span>: <span class="kw">true</span>,
+  <span class="pr">changeDetection</span>: ChangeDetectionStrategy.<span class="pr">OnPush</span> })
+<span class="kw">export class</span> <span class="tp">UserList</span> { <span class="cm">// &#9989; no suffix</span>
+  <span class="kw">private readonly</span> store = <span class="fn">inject</span>(<span class="tp">UsersStore</span>);
+  <span class="kw">readonly</span> filter = <span class="fn">input</span>&lt;<span class="str">'all'</span>|<span class="str">'active'</span>&gt;(<span class="str">'all'</span>);
+
+  <span class="cm">// No lifecycle hooks. No subscriptions.</span>
+  <span class="kw">protected readonly</span> users = <span class="fn">computed</span>(() =>
+    <span class="kw">this</span>.store.<span class="fn">entities</span>()
+      .<span class="fn">filter</span>(u => <span class="kw">this</span>.<span class="fn">filter</span>() === <span class="str">'all'</span> || u.active)
+  );
+}</code></pre></div></div>
+  </div>
+
+  <div class="div">Access Modifiers &mdash; Official Style Guide Rule</div>
+  <div class="cb" style="margin-bottom:24px">
+    <div class="cb-head"><div class="cb-lang"><span style="color:var(--blue)">TS</span> Correct access modifiers on all Angular APIs</div><button class="cb-copy" onclick="cpCode(this)">copy</button></div>
+<pre><code><span class="kw">export class</span> <span class="tp">UserProfile</span> {
+  <span class="cm">// &#9989; Angular APIs: ALWAYS readonly</span>
+  <span class="kw">readonly</span> <span class="pr">userId</span>   = <span class="fn">input</span>&lt;<span class="kw">string</span>&gt;();
+  <span class="kw">readonly</span> <span class="pr">userName</span> = <span class="fn">model</span>&lt;<span class="kw">string</span>&gt;();
+  <span class="kw">readonly</span> <span class="pr">saved</span>    = <span class="fn">output</span>&lt;<span class="kw">void</span>&gt;();
+  <span class="kw">readonly</span> <span class="pr">formRef</span>  = <span class="fn">viewChild</span>&lt;<span class="tp">ElementRef</span>&gt;(<span class="str">'form'</span>);
+  <span class="cm">// &#9989; private = TS logic only</span>
+  <span class="kw">private readonly</span> users = <span class="fn">inject</span>(<span class="tp">Users</span>);
+  <span class="cm">// &#9989; protected = template-only (style guide rule)</span>
+  <span class="kw">protected readonly</span> isAdmin = <span class="fn">computed</span>(() =>
+    <span class="kw">this</span>.users.<span class="fn">currentRole</span>() === <span class="str">'admin'</span>
+  );
+  <span class="cm">// &#9989; public = external API (default, no keyword)</span>
+  <span class="fn">focus</span>(): <span class="kw">void</span> { <span class="kw">this</span>.formRef()?.nativeElement.<span class="fn">focus</span>(); }
+}</code></pre>
+  </div>
+
+  <div class="div">@defer / @for / @if &mdash; Modern Template Syntax</div>
+  <div class="cb">
+    <div class="cb-head"><div class="cb-lang"><span style="color:var(--org)">HTML</span> Control flow + @defer for performance</div><button class="cb-copy" onclick="cpCode(this)">copy</button></div>
+<pre><code><span class="cm">&lt;!-- &#9989; @defer: lazy-load heavy components --&gt;</span>
+@<span class="kw">defer</span> (on viewport; prefetch on idle) {
+  &lt;<span class="fn">app-analytics-chart</span> [data]="chartData()" /&gt;
+} @<span class="kw">placeholder</span> {
+  &lt;div class="chart-skeleton"&gt;&lt;/div&gt;
+} @<span class="kw">loading</span> (minimum 300ms) {
+  &lt;<span class="fn">app-spinner</span> /&gt;
+}
+
+<span class="cm">&lt;!-- &#9989; @for replaces *ngFor (required track) --&gt;</span>
+@<span class="kw">for</span> (user <span class="kw">of</span> users(); <span class="kw">track</span> user.id) {
+  &lt;<span class="fn">app-user-card</span> [user]="user" /&gt;
+} @<span class="kw">empty</span> {
+  &lt;<span class="fn">app-empty-state</span> /&gt;
+}
+
+<span class="cm">&lt;!-- &#9989; @if replaces *ngIf --&gt;</span>
+@<span class="kw">if</span> (isAdmin()) {
+  &lt;<span class="fn">app-admin-panel</span> /&gt;
+}</code></pre>
+  </div>
+</section>
+
+<section class="sec" id="state">
+  <div class="sec-head">
+    <div class="sec-icon" style="background:rgba(192,132,252,.1)">&#128440;</div>
+    <div>
+      <div class="sec-title" style="color:var(--pur)">State Management &mdash; Signal Store</div>
+      <div class="sec-desc">NgRx 18+ Signal Store replaces verbose Actions/Reducers/Effects for most feature-level state.</div>
+    </div>
+  </div>
+  <div class="g2">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="card"><div class="card-title" style="color:var(--pur)">Choose Your Tool</div><ul>
+        <li><strong>Signal Store</strong> &mdash; feature state, simple async</li>
+        <li><strong>Classic NgRx</strong> &mdash; complex shared state, DevTools</li>
+        <li><strong>Local signals</strong> &mdash; UI only: open/closed, tab selection</li>
+        <li><strong>RxJS + toSignal()</strong> &mdash; complex async pipelines</li>
+      </ul></div>
+      <div class="co co-info" style="margin-bottom:0">
+        <div class="co-t">&#128204; Signal Forms</div>
+        <p>There is <strong>no official <code>signalForm()</code> API yet</strong>. Use <code>ReactiveFormsModule</code> with <code>NonNullableFormBuilder</code> and bridge form status to signals via <code>toSignal(form.statusChanges)</code>.</p>
+      </div>
+    </div>
+    <div class="cb">
+      <div class="cb-head"><div class="cb-lang"><span style="color:var(--blue)">TS</span> users.store.ts &mdash; NgRx Signal Store</div><span class="tag t-sig">NgRx 18+</span></div>
+<pre><code><span class="kw">export const</span> <span class="tp">UsersStore</span> = <span class="fn">signalStore</span>(
+  <span class="fn">withEntities</span>&lt;<span class="tp">User</span>&gt;(),
+  <span class="fn">withState</span>({
+    loading: <span class="kw">false</span>,
+    error: <span class="kw">null as string</span> | <span class="kw">null</span>
+  }),
+  <span class="fn">withComputed</span>(({ entities }) => ({
+    activeUsers: <span class="fn">computed</span>(() =>
+      <span class="fn">entities</span>().<span class="fn">filter</span>(u => u.active)
+    ),
+    totalCount: <span class="fn">computed</span>(() => <span class="fn">entities</span>().length)
+  })),
+  <span class="fn">withMethods</span>((store, api = <span class="fn">inject</span>(<span class="tp">UsersApi</span>)) => ({
+    <span class="kw">async</span> <span class="fn">loadAll</span>() {
+      <span class="fn">patchState</span>(store, { loading: <span class="kw">true</span>, error: <span class="kw">null</span> });
+      <span class="kw">try</span> {
+        <span class="kw">const</span> users = <span class="kw">await</span> <span class="fn">firstValueFrom</span>(api.<span class="fn">getAll</span>());
+        <span class="fn">patchState</span>(store, <span class="fn">setAllEntities</span>(users));
+      } <span class="kw">catch</span> (e) {
+        <span class="fn">patchState</span>(store, { error: <span class="str">'Failed to load'</span> });
+      } <span class="kw">finally</span> {
+        <span class="fn">patchState</span>(store, { loading: <span class="kw">false</span> });
+      }
+    }
+  }))
+);</code></pre>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="testing">
+  <div class="sec-head">
+    <div class="sec-icon" style="background:rgba(52,211,153,.1)">&#129514;</div>
+    <div>
+      <div class="sec-title" style="color:var(--grn)">Testing Strategy</div>
+      <div class="sec-desc">Tests live colocated with source files. Angular Testing Library improves ergonomics. Playwright for E2E.</div>
+    </div>
+  </div>
+  <div class="g2">
+    <div>
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab(this,'t-unit')">Unit Tests</button>
+        <button class="tab-btn" onclick="switchTab(this,'t-int')">Integration (ATL)</button>
+        <button class="tab-btn" onclick="switchTab(this,'t-e2e')">E2E (Playwright)</button>
+      </div>
+      <div id="t-unit" class="tab-pane active"><div class="cb" style="border-radius:0 0 var(--rad) var(--rad)"><div class="cb-head"><div class="cb-lang"><span style="color:var(--blue)">TS</span> users-api.spec.ts &mdash; unit test</div><button class="cb-copy" onclick="cpCode(this)">copy</button></div>
+<pre><code><span class="fn">describe</span>(<span class="str">'UsersApi'</span>, () => {
+  <span class="kw">let</span> service: <span class="tp">UsersApi</span>;
+  <span class="kw">let</span> http: <span class="tp">HttpTestingController</span>;
+
+  <span class="fn">beforeEach</span>(() => {
+    <span class="tp">TestBed</span>.<span class="fn">configureTestingModule</span>({
+      providers: [<span class="fn">provideHttpClientTesting</span>(), <span class="tp">UsersApi</span>]
+    });
+    service = <span class="tp">TestBed</span>.<span class="fn">inject</span>(<span class="tp">UsersApi</span>);
+    http = <span class="tp">TestBed</span>.<span class="fn">inject</span>(<span class="tp">HttpTestingController</span>);
+  });
+
+  <span class="fn">it</span>(<span class="str">'fetches users'</span>, (done) => {
+    <span class="kw">const</span> mock = [{ id: <span class="str">'1'</span>, name: <span class="str">'Alice'</span> }];
+    service.<span class="fn">getAll</span>().<span class="fn">subscribe</span>(users => {
+      <span class="fn">expect</span>(users).<span class="fn">toEqual</span>(mock); done();
+    });
+    http.<span class="fn">expectOne</span>(<span class="str">'/api/users'</span>).<span class="fn">flush</span>(mock);
+  });
+});</code></pre></div></div>
+      <div id="t-int" class="tab-pane"><div class="cb" style="border-radius:0 0 var(--rad) var(--rad)"><div class="cb-head"><div class="cb-lang"><span style="color:var(--blue)">TS</span> user-list.spec.ts &mdash; Angular Testing Library</div></div>
+<pre><code><span class="kw">import</span> { <span class="fn">render</span>, <span class="fn">screen</span> } <span class="kw">from</span> <span class="str">'@testing-library/angular'</span>;
+
+<span class="fn">it</span>(<span class="str">'renders users from store'</span>, <span class="kw">async</span> () => {
+  <span class="kw">await</span> <span class="fn">render</span>(<span class="tp">UserList</span>, { <span class="cm">// &#9989; new class name</span>
+    providers: [{
+      provide: <span class="tp">UsersStore</span>,
+      useValue: {
+        entities: <span class="fn">signal</span>([
+          { id: <span class="str">'1'</span>, name: <span class="str">'Alice'</span>, active: <span class="kw">true</span> }
+        ]),
+        loading: <span class="fn">signal</span>(<span class="kw">false</span>),
+        loadAll: <span class="fn">jest.fn</span>()
+      }
+    }]
+  });
+  <span class="fn">expect</span>(<span class="fn">screen.getByText</span>(<span class="str">'Alice'</span>))
+    .<span class="fn">toBeInTheDocument</span>();
+});</code></pre></div></div>
+      <div id="t-e2e" class="tab-pane"><div class="cb" style="border-radius:0 0 var(--rad) var(--rad)"><div class="cb-head"><div class="cb-lang"><span style="color:var(--blue)">TS</span> auth-flow.spec.ts &mdash; Playwright</div></div>
+<pre><code><span class="kw">import</span> { <span class="fn">test</span>, <span class="fn">expect</span> } <span class="kw">from</span> <span class="str">'@playwright/test'</span>;
+
+<span class="fn">test</span>(<span class="str">'user can login and reach dashboard'</span>, <span class="kw">async</span> ({ page }) => {
+  <span class="kw">await</span> page.<span class="fn">goto</span>(<span class="str">'/auth/login'</span>);
+  <span class="kw">await</span> page.<span class="fn">fill</span>(<span class="str">'[data-testid=email]'</span>, <span class="str">'<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="324741574072465741461c515d5f">[email&#160;protected]</a>'</span>);
+  <span class="kw">await</span> page.<span class="fn">fill</span>(<span class="str">'[data-testid=password]'</span>, <span class="str">'password123'</span>);
+  <span class="kw">await</span> page.<span class="fn">click</span>(<span class="str">'[data-testid=submit]'</span>);
+  <span class="kw">await</span> <span class="fn">expect</span>(page).<span class="fn">toHaveURL</span>(<span class="str">'/dashboard'</span>);
+});</code></pre></div></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="card"><div class="card-title" style="color:var(--grn)">Testing Toolchain 2026</div><ul>
+        <li><strong>Jest</strong> &mdash; default Angular runner (replaces Karma)</li>
+        <li><strong>Angular Testing Library</strong> &mdash; user-centric tests</li>
+        <li><strong>Playwright</strong> &mdash; E2E (preferred over Cypress)</li>
+        <li><strong>HttpTestingController</strong> &mdash; official HTTP mocking</li>
+        <li><strong>ng-mocks</strong> &mdash; simplified Angular utilities</li>
+      </ul></div>
+      <div class="card"><div class="card-title" style="color:var(--grn)">Test Location Rules</div><ul>
+        <li>Tests <strong>colocated</strong> with source files</li>
+        <li>Never in a separate top-level <code>/tests/</code> folder</li>
+        <li><code>user-list.spec.ts</code> next to <code>user-list.ts</code></li>
+        <li>E2E tests in <code>/e2e/</code> at project root</li>
+        <li>Test file names match new naming: no <code>.component</code></li>
+      </ul></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="cli">
+  <div class="sec-head">
+    <div class="sec-icon" style="background:rgba(79,158,255,.1)">&#9000;</div>
+    <div>
+      <div class="sec-title" style="color:var(--blue)">CLI Commands Reference</div>
+      <div class="sec-desc">Every common Angular CLI command with v20+ output. Click copy on any command.</div>
+    </div>
+  </div>
+  <div class="cli-grid">
+    <div class="cli-cmd">
+      <div class="cli-title">New project</div>
+      <div class="cli-code"><code>ng new my-app --style=scss --routing --ssr=false</code><button class="cb-copy" onclick="cpText('ng new my-app --style=scss --routing --ssr=false',this)">copy</button></div>
+    </div>
+    <div class="cli-cmd">
+      <div class="cli-title">Generate component (no .component suffix)</div>
+      <div class="cli-code"><code>ng g c features/users/user-list</code><button class="cb-copy" onclick="cpText('ng g c features/users/user-list',this)">copy</button></div>
+      <div class="cli-note">Generates user-list.ts, .html, .scss, .spec.ts</div>
+    </div>
+    <div class="cli-cmd">
+      <div class="cli-title">Generate service / injectable</div>
+      <div class="cli-code"><code>ng g s core/auth/auth</code><button class="cb-copy" onclick="cpText('ng g s core/auth/auth',this)">copy</button></div>
+      <div class="cli-note">Generates auth.ts with class Auth</div>
+    </div>
+    <div class="cli-cmd">
+      <div class="cli-title">Generate directive</div>
+      <div class="cli-code"><code>ng g d shared/click-outside</code><button class="cb-copy" onclick="cpText('ng g d shared/click-outside',this)">copy</button></div>
+    </div>
+    <div class="cli-cmd">
+      <div class="cli-title">Generate pipe (keeps Pipe suffix)</div>
+      <div class="cli-code"><code>ng g p shared/pipes/date-format</code><button class="cb-copy" onclick="cpText('ng g p shared/pipes/date-format',this)">copy</button></div>
+      <div class="cli-note">date-format-pipe.ts &mdash; class DateFormatPipe</div>
+    </div>
+    <div class="cli-cmd">
+      <div class="cli-title">Generate functional guard</div>
+      <div class="cli-code"><code>ng g g core/auth/auth</code><button class="cb-copy" onclick="cpText('ng g g core/auth/auth',this)">copy</button></div>
+    </div>
+    <div class="cli-cmd">
+      <div class="cli-title">Generate interceptor</div>
+      <div class="cli-code"><code>ng g interceptor core/http/auth</code><button class="cb-copy" onclick="cpText('ng g interceptor core/http/auth',this)">copy</button></div>
+    </div>
+    <div class="cli-cmd">
+      <div class="cli-title">Migrate to inject() function</div>
+      <div class="cli-code"><code>ng generate @angular/core:inject</code><button class="cb-copy" onclick="cpText('ng generate @angular/core:inject',this)">copy</button></div>
+      <div class="cli-note">Automated migration from constructor injection</div>
+    </div>
+    <div class="cli-cmd">
+      <div class="cli-title">Migrate control flow (*ngIf &#8594; @if)</div>
+      <div class="cli-code"><code>ng generate @angular/core:control-flow</code><button class="cb-copy" onclick="cpText('ng generate @angular/core:control-flow',this)">copy</button></div>
+    </div>
+    <div class="cli-cmd">
+      <div class="cli-title">Migrate @Input to signal inputs</div>
+      <div class="cli-code"><code>ng generate @angular/core:signal-input-migration</code><button class="cb-copy" onclick="cpText('ng generate @angular/core:signal-input-migration',this)">copy</button></div>
+    </div>
+    <div class="cli-cmd">
+      <div class="cli-title">Opt back into old .component suffix</div>
+      <div class="cli-code"><code>ng g c user-list --type=component</code><button class="cb-copy" onclick="cpText('ng g c user-list --type=component',this)">copy</button></div>
+      <div class="cli-note">Per-command override for gradual migration</div>
+    </div>
+    <div class="cli-cmd">
+      <div class="cli-title">Build for production</div>
+      <div class="cli-code"><code>ng build --configuration=production</code><button class="cb-copy" onclick="cpText('ng build --configuration=production',this)">copy</button></div>
+      <div class="cli-note">esbuild + Vite by default in v17+</div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="perf">
+  <div class="sec-head">
+    <div class="sec-icon" style="background:rgba(251,146,60,.1)">&#128640;</div>
+    <div>
+      <div class="sec-title" style="color:var(--org)">Performance Checklist</div>
+      <div class="sec-desc">Click each item to mark it done. Check these off for every production Angular app.</div>
+    </div>
+  </div>
+  <div class="g2">
+    <div>
+      <p style="font-size:11px;color:var(--txt2);font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">Change Detection</p>
+      <div class="checklist" style="margin-bottom:20px">
+        <div class="cli-item" onclick="chk(this)"><input type="checkbox"><label><strong>OnPush everywhere</strong> &mdash; every <code>@Component</code> has <code>changeDetection: ChangeDetectionStrategy.OnPush</code></label></div>
+        <div class="cli-item" onclick="chk(this)"><input type="checkbox"><label><strong>Zoneless enabled</strong> &mdash; <code>provideZonelessChangeDetection()</code> + remove Zone.js from polyfills</label></div>
+        <div class="cli-item" onclick="chk(this)"><input type="checkbox"><label><strong>Signal-based state</strong> &mdash; CD runs automatically on signal updates; no <code>markForCheck()</code></label></div>
+      </div>
+      <p style="font-size:11px;color:var(--txt2);font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">Bundle &amp; Loading</p>
+      <div class="checklist" style="margin-bottom:20px">
+        <div class="cli-item" onclick="chk(this)"><input type="checkbox"><label><strong>All routes lazy-loaded</strong> &mdash; <code>loadComponent()</code> or <code>loadChildren()</code> everywhere</label></div>
+        <div class="cli-item" onclick="chk(this)"><input type="checkbox"><label><strong>@defer blocks</strong> &mdash; heavy components deferred with <code>on viewport</code> or <code>on idle</code></label></div>
+        <div class="cli-item" onclick="chk(this)"><input type="checkbox"><label><strong>withFetch()</strong> &mdash; <code>provideHttpClient(withFetch())</code> uses native fetch API</label></div>
+        <div class="cli-item" onclick="chk(this)"><input type="checkbox"><label><strong>esbuild build</strong> &mdash; using <code>@angular-devkit/build-angular:application</code></label></div>
+      </div>
+    </div>
+    <div>
+      <p style="font-size:11px;color:var(--txt2);font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">Templates</p>
+      <div class="checklist" style="margin-bottom:20px">
+        <div class="cli-item" onclick="chk(this)"><input type="checkbox"><label><strong>track in @for</strong> &mdash; every <code>@for</code> has <code>track item.id</code></label></div>
+        <div class="cli-item" onclick="chk(this)"><input type="checkbox"><label><strong>@if / @for / @switch</strong> &mdash; no deprecated <code>*ngIf</code>, <code>*ngFor</code></label></div>
+        <div class="cli-item" onclick="chk(this)"><input type="checkbox"><label><strong>Avoid ngClass/ngStyle</strong> &mdash; use <code>[class.foo]</code> and <code>[style.prop]</code></label></div>
+        <div class="cli-item" onclick="chk(this)"><input type="checkbox"><label><strong>Signal inputs/outputs</strong> &mdash; no <code>@Input()</code> / <code>@Output()</code> decorators</label></div>
+      </div>
+      <p style="font-size:11px;color:var(--txt2);font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px">SSR &amp; Core Web Vitals</p>
+      <div class="checklist">
+        <div class="cli-item" onclick="chk(this)"><input type="checkbox"><label><strong>Client hydration</strong> &mdash; <code>provideClientHydration(withEventReplay())</code></label></div>
+        <div class="cli-item" onclick="chk(this)"><input type="checkbox"><label><strong>NgOptimizedImage</strong> &mdash; use directive for all <code>&lt;img&gt;</code> tags</label></div>
+        <div class="cli-item" onclick="chk(this)"><input type="checkbox"><label><strong>View Transitions</strong> &mdash; <code>withViewTransitions()</code> in router config</label></div>
+        <div class="cli-item" onclick="chk(this)"><input type="checkbox"><label><strong>provideAnimationsAsync()</strong> &mdash; load animations lazily</label></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="migration">
+  <div class="sec-head">
+    <div class="sec-icon" style="background:rgba(34,211,238,.1)">&#128260;</div>
+    <div>
+      <div class="sec-title" style="color:var(--cyn)">Migration Guide &mdash; Old to New</div>
+      <div class="sec-desc">Upgrade an existing codebase to v20+ conventions. Most steps have automated CLI schematics.</div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div class="mig-step"><div class="mig-num" style="background:rgba(221,0,49,.1);color:var(--red);border:1px solid rgba(221,0,49,.3)">1</div><div class="mig-body"><div class="mig-title">Update to Angular v20+ &amp; run update schematics</div><div class="mig-desc">Run <code>ng update @angular/core @angular/cli</code>. Angular's automated migration handles most breaking changes. Check <a href="https://update.angular.io" style="color:var(--blue)">update.angular.io</a> for your specific version path.</div></div></div>
+    <div class="mig-step"><div class="mig-num" style="background:rgba(251,191,36,.1);color:var(--ylw);border:1px solid rgba(251,191,36,.3)">2</div><div class="mig-body"><div class="mig-title">Migrate constructor injection &rarr; inject()</div><div class="mig-desc">Run <code>ng generate @angular/core:inject</code> &mdash; official automated migration that converts all constructor-injected dependencies to <code>inject()</code> calls.</div></div></div>
+    <div class="mig-step"><div class="mig-num" style="background:rgba(52,211,153,.1);color:var(--grn);border:1px solid rgba(52,211,153,.3)">3</div><div class="mig-body"><div class="mig-title">Replace *ngIf / *ngFor with control flow</div><div class="mig-desc">Run <code>ng generate @angular/core:control-flow</code> &mdash; official automated migration from structural directives to <code>@if</code>, <code>@for</code>, <code>@switch</code>. Old directives are deprecated in v17+.</div></div></div>
+    <div class="mig-step"><div class="mig-num" style="background:rgba(79,158,255,.1);color:var(--blue);border:1px solid rgba(79,158,255,.3)">4</div><div class="mig-body"><div class="mig-title">Migrate class-based guards &amp; interceptors to functional</div><div class="mig-desc">Class-based <code>CanActivate</code> and <code>HttpInterceptor</code> are deprecated. Replace with <code>CanActivateFn</code> and <code>HttpInterceptorFn</code> functional forms. The CLI generates functional by default.</div></div></div>
+    <div class="mig-step"><div class="mig-num" style="background:rgba(192,132,252,.1);color:var(--pur);border:1px solid rgba(192,132,252,.3)">5</div><div class="mig-body"><div class="mig-title">Migrate @Input / @Output to signal APIs</div><div class="mig-desc">Run <code>ng generate @angular/core:signal-input-migration</code> and <code>ng generate @angular/core:output-migration</code>. Converts decorator-based inputs to <code>input()</code> signals.</div></div></div>
+    <div class="mig-step"><div class="mig-num" style="background:rgba(251,146,60,.1);color:var(--org);border:1px solid rgba(251,146,60,.3)">6</div><div class="mig-body"><div class="mig-title">Migrate NgModules to standalone</div><div class="mig-desc">Run <code>ng generate @angular/core:standalone</code>. Removes NgModule declarations and adds <code>standalone: true</code> to all components, directives, and pipes.</div></div></div>
+    <div class="mig-step"><div class="mig-num" style="background:rgba(244,114,182,.1);color:var(--pnk);border:1px solid rgba(244,114,182,.3)">7</div><div class="mig-body"><div class="mig-title">Rename files/classes to drop type suffixes (team decision)</div><div class="mig-desc">No automated migration for this &mdash; it's a team decision. Use IDE bulk rename (F2 in VS Code). If you keep old suffixes, configure <code>angular.json</code> schematics with <code>"type": "component"</code>. <strong>Consistency matters more than which convention you choose.</strong></div></div></div>
+  </div>
+</section>
+
+<section class="sec" id="mistakes">
+  <div class="sec-head">
+    <div class="sec-icon" style="background:rgba(221,0,49,.1)">&#10060;</div>
+    <div>
+      <div class="sec-title" style="color:var(--red)">10 Common Architecture Mistakes</div>
+      <div class="sec-desc">The most frequent pitfalls seen in real Angular codebases &mdash; with the correct fix for each.</div>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="mistake"><div class="mistake-head"><div class="mistake-num">1</div><div class="mistake-title">Organizing by file type instead of feature area <span class="tag t-warn" style="margin-left:6px">Official style guide rule</span></div></div>
+    <div class="mistake-body">
+      <p style="font-size:12px;color:var(--txt2);line-height:1.7;margin-bottom:12px">
+        <strong style="color:var(--txt)">What the style guide means:</strong> When you create <code>components/</code>, <code>services/</code>, <code>directives/</code> folders, you are grouping by <em>what Angular calls the file</em>. But features don't respect those boundaries &mdash; a User List feature needs a component <em>and</em> a service <em>and</em> maybe a directive. Splitting them across type folders means every single feature is scattered across your entire project. The guide says: group by <strong style="color:var(--ylw)">what the code does</strong>, not what Angular type it is.
+      </p>
+      <div class="cmp">
+        <div>
+          <div class="rule r-dn">&#10060; Type-based folders (the old Angular tutorial way)</div>
+          <div class="tree-wrap"><div class="tree-body">
+            <div class="tl"><span class="tc">&#128193; </span><span class="tn f">components/</span></div>
+            <div class="ti">
+              <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">user-list.ts</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">user-detail.ts</span></div>
+              <div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn ts">product-list.ts</span></div>
+            </div>
+            <div class="tl"><span class="tc">&#128193; </span><span class="tn f">services/</span></div>
+            <div class="ti">
+              <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">users-api.ts</span></div>
+              <div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn ts">products-api.ts</span></div>
+            </div>
+            <div class="tl"><span class="tc">&#128193; </span><span class="tn f">directives/</span></div>
+            <div class="tl"><span class="tc">&#128193; </span><span class="tn f">pipes/</span></div>
+          </div></div>
+          <p style="font-size:10.5px;color:var(--red);margin-top:7px;line-height:1.55">Understanding, modifying, or deleting the "users" feature requires navigating 3+ folders. New developers have no idea what the app <em>does</em> from reading the tree &mdash; only what Angular types exist.</p>
+        </div>
+        <div>
+          <div class="rule r-do">&#9989; Feature/concept-based folders (style guide)</div>
+          <div class="tree-wrap"><div class="tree-body">
+            <div class="tl"><span class="tc">&#128193; </span><span class="tn f">features/</span></div>
+            <div class="ti">
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">users/</span></div>
+              <div class="ti">
+                <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">user-list/</span></div>
+                <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">user-detail/</span></div>
+                <div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn ts">users-api.ts</span></div>
+              </div>
+              <div class="tl"><span class="tc">&#9492;&#9472; &#128193; </span><span class="tn f">products/</span></div>
+              <div class="ti">
+                <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">product-list/</span></div>
+                <div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn ts">products-api.ts</span></div>
+              </div>
+            </div>
+            <div class="tl"><span class="tc">&#128193; </span><span class="tn f">shared/</span><span class="tcm">reusables with no feature owner</span></div>
+          </div></div>
+          <p style="font-size:10.5px;color:var(--grn);margin-top:7px;line-height:1.55">Every file for a feature lives in its folder. New dev opens <code>users/</code> and sees everything. Deleting a feature = delete one folder. Reading the tree tells you what the app <em>does</em>.</p>
+        </div>
+      </div>
+      <div style="background:var(--sur2);border:1px solid var(--bdr);border-radius:5px;padding:10px 14px;margin-top:10px">
+        <span style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--cyn)">&#128161; Apply this rule everywhere &mdash; inside features too</span>
+        <p style="font-size:11.5px;color:var(--txt2);line-height:1.55;margin-top:4px">Don't create <code>features/users/components/</code> or <code>features/users/services/</code> either. Keep the feature flat or use sub-folders named after sub-concepts: <code>user-list/</code>, <code>user-detail/</code>. The rule applies at every level of the tree.</p>
+      </div>
+    </div></div>
+
+    <div class="mistake"><div class="mistake-head"><div class="mistake-num">2</div><div class="mistake-title">Features importing directly from other features</div></div>
+    <div class="mistake-body"><div class="cmp">
+      <div><div class="rule r-dn">&#10060; Avoid</div><div class="cb"><pre><code><span class="cm">// In features/orders/order-detail.ts</span>
+<span class="kw">import</span> { <span class="tp">UserCard</span> } <span class="kw">from</span>
+  <span class="str">'../users/user-card'</span>;
+<span class="cm">// &#10060; Direct feature-to-feature import</span></code></pre></div></div>
+      <div><div class="rule r-do">&#9989; Do</div><div class="cb"><pre><code><span class="cm">// Move UserCard to shared/</span>
+<span class="kw">import</span> { <span class="tp">UserCard</span> } <span class="kw">from</span>
+  <span class="str">'../../shared/user-card/user-card'</span>;
+<span class="cm">// &#9989; Import from shared/ instead</span></code></pre></div></div>
+    </div></div></div>
+
+    <div class="mistake"><div class="mistake-head"><div class="mistake-num">3</div><div class="mistake-title">Not using OnPush change detection</div></div>
+    <div class="mistake-body"><div class="cmp">
+      <div><div class="rule r-dn">&#10060; Missing changeDetection</div><div class="cb"><pre><code><span class="dec">@Component</span>({
+  <span class="pr">standalone</span>: <span class="kw">true</span>
+  <span class="cm">// &#10060; Defaults to Default (slow)</span>
+})</code></pre></div></div>
+      <div><div class="rule r-do">&#9989; Always OnPush</div><div class="cb"><pre><code><span class="dec">@Component</span>({
+  <span class="pr">standalone</span>: <span class="kw">true</span>,
+  <span class="pr">changeDetection</span>:
+    ChangeDetectionStrategy.<span class="pr">OnPush</span>
+})</code></pre></div></div>
+    </div></div></div>
+
+    <div class="mistake"><div class="mistake-head"><div class="mistake-num">4</div><div class="mistake-title">Business logic inside components</div></div>
+    <div class="mistake-body"><div class="cmp">
+      <div><div class="rule r-dn">&#10060; Logic in component</div><div class="cb"><pre><code><span class="kw">protected</span> <span class="fn">calcDiscount</span>(price: <span class="kw">number</span>) {
+  <span class="cm">// 20 lines of tax + discount logic</span>
+  <span class="cm">// &#10060; Business logic in component</span>
+}</code></pre></div></div>
+      <div><div class="rule r-do">&#9989; Extract to injectable</div><div class="cb"><pre><code><span class="kw">private readonly</span> pricing =
+  <span class="fn">inject</span>(<span class="tp">PricingRules</span>);
+
+<span class="kw">protected readonly</span> discount =
+  <span class="fn">computed</span>(() =>
+    <span class="kw">this</span>.pricing.<span class="fn">calculate</span>(<span class="kw">this</span>.<span class="fn">price</span>())
+  );</code></pre></div></div>
+    </div></div></div>
+
+    <div class="mistake"><div class="mistake-head"><div class="mistake-num">5</div><div class="mistake-title">Public on template-only members</div></div>
+    <div class="mistake-body"><div class="cmp">
+      <div><div class="rule r-dn">&#10060; public (unnecessary exposure)</div><div class="cb"><pre><code><span class="kw">public</span> isAdmin = <span class="fn">computed</span>(() =>
+  <span class="kw">this</span>.<span class="fn">role</span>() === <span class="str">'admin'</span>
+);
+<span class="cm">// &#10060; Exposed to DI/queries unnecessarily</span></code></pre></div></div>
+      <div><div class="rule r-do">&#9989; protected (style guide rule)</div><div class="cb"><pre><code><span class="kw">protected readonly</span> isAdmin =
+  <span class="fn">computed</span>(() =>
+    <span class="kw">this</span>.<span class="fn">role</span>() === <span class="str">'admin'</span>
+  );
+<span class="cm">// &#9989; Template access, private to class API</span></code></pre></div></div>
+    </div></div></div>
+
+    <div class="mistake"><div class="mistake-head"><div class="mistake-num">6</div><div class="mistake-title">Missing track in @for loops</div></div>
+    <div class="mistake-body"><div class="cmp">
+      <div><div class="rule r-dn">&#10060;</div><div class="cb"><pre><code>@<span class="kw">for</span> (user <span class="kw">of</span> users()) {
+  <span class="cm">&lt;!-- &#10060; No track &mdash; full re-render --&gt;</span>
+  &lt;app-user-card [user]="user" /&gt;
+}</code></pre></div></div>
+      <div><div class="rule r-do">&#9989;</div><div class="cb"><pre><code>@<span class="kw">for</span> (user <span class="kw">of</span> users();
+  <span class="kw">track</span> user.id) {
+  &lt;app-user-card [user]="user" /&gt;
+}</code></pre></div></div>
+    </div></div></div>
+
+    <div class="mistake"><div class="mistake-head"><div class="mistake-num">7</div><div class="mistake-title">Using ngClass / ngStyle instead of binding syntax</div></div>
+    <div class="mistake-body"><div class="cmp">
+      <div><div class="rule r-dn">&#10060; Extra overhead</div><div class="cb"><pre><code>&lt;div [<span class="pr">ngClass</span>]="{ active: isActive }"&gt;
+<span class="cm">&lt;!-- &#10060; ngStyle/ngClass are slower --&gt;</span></code></pre></div></div>
+      <div><div class="rule r-do">&#9989; Official recommendation</div><div class="cb"><pre><code>&lt;div [<span class="pr">class.active</span>]="isActive()"&gt;
+<span class="cm">&lt;!-- &#9989; Native binding syntax --&gt;</span></code></pre></div></div>
+    </div></div></div>
+
+    <div class="mistake"><div class="mistake-head"><div class="mistake-num">8</div><div class="mistake-title">Eager-loading routes</div></div>
+    <div class="mistake-body"><div class="cmp">
+      <div><div class="rule r-dn">&#10060; Eager (loaded at startup)</div><div class="cb"><pre><code>{ <span class="pr">path</span>: <span class="str">'dashboard'</span>,
+  <span class="pr">component</span>: <span class="tp">Dashboard</span> }
+<span class="cm">// &#10060; Increases initial bundle</span></code></pre></div></div>
+      <div><div class="rule r-do">&#9989; Lazy (separate chunk)</div><div class="cb"><pre><code>{ <span class="pr">path</span>: <span class="str">'dashboard'</span>,
+  <span class="pr">loadComponent</span>: () =>
+    <span class="fn">import</span>(<span class="str">'./dashboard/dashboard'</span>)
+      .<span class="fn">then</span>(m => m.<span class="tp">Dashboard</span>) }</code></pre></div></div>
+    </div></div></div>
+
+    <div class="mistake"><div class="mistake-head"><div class="mistake-num">9</div><div class="mistake-title">Using services via constructor injection in v20+</div></div>
+    <div class="mistake-body"><div class="cmp">
+      <div><div class="rule r-ol">&#10060; Old (still works, not recommended)</div><div class="cb"><pre><code><span class="kw">constructor</span>(
+  <span class="kw">private</span> auth: <span class="tp">Auth</span>,
+  <span class="kw">private</span> router: <span class="tp">Router</span>
+) {}</code></pre></div></div>
+      <div><div class="rule r-do">&#9989; inject() (style guide recommendation)</div><div class="cb"><pre><code><span class="kw">private readonly</span> auth   = <span class="fn">inject</span>(<span class="tp">Auth</span>);
+<span class="kw">private readonly</span> router = <span class="fn">inject</span>(<span class="tp">Router</span>);</code></pre></div></div>
+    </div></div></div>
+
+    <div class="mistake"><div class="mistake-head"><div class="mistake-num">10</div><div class="mistake-title">Complex logic in templates instead of computed signals</div></div>
+    <div class="mistake-body"><div class="cmp">
+      <div><div class="rule r-dn">&#10060; Complex template expression</div><div class="cb"><pre><code>@<span class="kw">if</span> (users().length > 0 &amp;&amp;
+     !loading() &amp;&amp;
+     users().<span class="fn">some</span>(u => u.role===<span class="str">'admin'</span>)) {</code></pre></div></div>
+      <div><div class="rule r-do">&#9989; Computed signal in class</div><div class="cb"><pre><code><span class="kw">protected readonly</span> showAdmin =
+  <span class="fn">computed</span>(() =>
+    <span class="kw">this</span>.store.<span class="fn">users</span>().length > <span class="nm">0</span> &&
+    !<span class="kw">this</span>.store.<span class="fn">loading</span>() &&
+    <span class="kw">this</span>.store.<span class="fn">users</span>()
+      .<span class="fn">some</span>(u => u.role===<span class="str">'admin'</span>)
+  );</code></pre></div></div>
+    </div></div></div>
+  </div>
+</section>
+
+<section class="sec" id="rules">
+  <div class="sec-head">
+    <div class="sec-icon" style="background:rgba(79,158,255,.1)">&#128208;</div>
+    <div>
+      <div class="sec-title" style="color:var(--blue)">Complete Rules Reference</div>
+      <div class="sec-desc">Every key rule from <a href="https://angular.dev/style-guide" style="color:var(--blue)">angular.dev/style-guide</a> plus 2026 best practices.</div>
+    </div>
+  </div>
+  <div class="g4">
+    <div class="card"><div class="card-title" style="color:var(--red)">File &amp; Class Naming</div><ul>
+      <li>No type suffixes in filenames: <code>user-list.ts</code></li>
+      <li>No type suffixes in class names: <code>UserList</code></li>
+      <li>Pipes KEEP Pipe suffix. NgModules KEEP Module</li>
+      <li>Pipe file separator: hyphen &rarr; <code>date-format-pipe.ts</code></li>
+      <li>kebab-case for all files and folders</li>
+      <li>One concept per file</li>
+      <li>Avoid generic names: utils, helpers, common</li>
+    </ul></div>
+    <div class="card"><div class="card-title" style="color:var(--blue)">Project Structure</div><ul>
+      <li>All UI code in <code>src/</code></li>
+      <li>Bootstrap in <code>main.ts</code> always</li>
+      <li>Organize by <strong>feature area</strong>, not file type</li>
+      <li><strong>No type-based subdirs</strong> &mdash; avoid <code>components/</code>, <code>services/</code>, <code>directives/</code>. Group by feature/concept, not by what Angular calls it</li>
+      <li>Group .ts + .html + .scss + .spec together</li>
+      <li>Tests colocated, never in top-level /tests</li>
+    </ul></div>
+    <div class="card"><div class="card-title" style="color:var(--grn)">Components</div><ul>
+      <li><code>standalone: true</code> always</li>
+      <li><code>OnPush</code> change detection always</li>
+      <li><code>input()</code> / <code>output()</code> not @Input/@Output</li>
+      <li>All Angular APIs: <code>readonly</code></li>
+      <li>Template-only members: <code>protected</code></li>
+      <li>Angular props grouped before methods</li>
+      <li>Implement lifecycle interfaces</li>
+    </ul></div>
+    <div class="card"><div class="card-title" style="color:var(--ylw)">Services / DI</div><ul>
+      <li><code>inject()</code> over constructor injection</li>
+      <li><code>providedIn: 'root'</code> for singletons</li>
+      <li>Domain-specific names: <code>AuthClient</code>, <code>UsersApi</code></li>
+      <li>One responsibility per injectable</li>
+      <li>Feature-scoped: provide in route</li>
+      <li>Never instantiate with <code>new</code></li>
+    </ul></div>
+    <div class="card"><div class="card-title" style="color:var(--pur)">Routing</div><ul>
+      <li>Always lazy-load with <code>loadComponent()</code></li>
+      <li>Functional guards, resolvers, interceptors</li>
+      <li>Wildcard route <code>**</code> always last</li>
+      <li><code>withComponentInputBinding()</code></li>
+      <li>One <code>*.routes.ts</code> per feature</li>
+      <li>Layout components as route parents</li>
+    </ul></div>
+    <div class="card"><div class="card-title" style="color:var(--cyn)">Signals (Stable v20)</div><ul>
+      <li>RxJS fetch &rarr; <code>toSignal()</code> to display</li>
+      <li>Derived state &rarr; <code>computed()</code></li>
+      <li>Writable dependent &rarr; <code>linkedSignal()</code></li>
+      <li>Side effects &rarr; <code>effect()</code> (sparingly)</li>
+      <li>Complex template logic &rarr; computed</li>
+      <li>No <code>takeUntil</code> with signal state</li>
+    </ul></div>
+    <div class="card"><div class="card-title" style="color:var(--org)">Templates</div><ul>
+      <li><code>@if</code>, <code>@for</code>, <code>@switch</code> not structural directives</li>
+      <li><code>track</code> expression in every <code>@for</code></li>
+      <li><code>[class.foo]</code> not <code>[ngClass]</code></li>
+      <li><code>[style.prop]</code> not <code>[ngStyle]</code></li>
+      <li>Name handlers for what they do: <code>saveUser()</code></li>
+      <li><code>@defer</code> for below-fold content</li>
+    </ul></div>
+    <div class="card"><div class="card-title" style="color:var(--pnk)">TypeScript</div><ul>
+      <li><code>strict: true</code> in tsconfig &mdash; mandatory</li>
+      <li>No <code>any</code> &mdash; use generics/types</li>
+      <li>Interfaces for shapes, no <code>I</code> prefix</li>
+      <li><code>const</code> / <code>readonly</code> over mutability</li>
+      <li>Optional chaining <code>?.</code> and nullish <code>??</code></li>
+      <li>Target ES2022+ in tsconfig</li>
+    </ul></div>
+  </div>
+
+  <div style="margin-top:28px" class="co co-tip">
+    <div class="co-t">&#127937; The Angular Style Guide's #1 Rule &mdash; Consistency Over Convention</div>
+    <p><strong>"Whenever you encounter a situation in which these rules contradict the style of a particular file, prioritize maintaining consistency within that file."</strong><br>Whatever your team decides about the suffix migration &mdash; old style or new style &mdash; configure <code>angular.json</code> schematics to enforce it automatically, and <strong>be consistent throughout the entire codebase</strong>.</p>
+  </div>
+</section>
+
+<footer>
+  <div>
+    Audited against <a href="https://angular.dev/style-guide" target="_blank">angular.dev/style-guide</a> &middot;
+    Angular v20/v21 &middot; NgRx 18+ &middot;
+    <a href="https://github.com/angular/angular/discussions/58412" target="_blank">RFC #58412</a>
+  </div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <span class="pill p-org">No .component Suffix</span>
+    <span class="pill p-blue">Signals Stable</span>
+    <span class="pill p-grn">Feature Structure</span>
+    <span class="pill p-red">Pipes Exception</span>
+    <span class="pill p-pur">3 Scale Tiers</span>
+  </div>
+</footer>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+window.addEventListener('scroll', () => {
+  const st = window.scrollY, h = document.body.scrollHeight - window.innerHeight;
+  document.getElementById('prog').style.width = (st/h*100)+'%';
+  document.getElementById('scrollTop').classList.toggle('vis', st > 400);
+});
+
+const allNi = document.querySelectorAll('.ni');
+const allSec = document.querySelectorAll('section[id]');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      allNi.forEach(n => n.classList.remove('active'));
+      const id = e.target.id;
+      const a = document.querySelector('.ni[href="#' + id + '"]');
+      if(a) { a.classList.add('active'); a.scrollIntoView({inline:'nearest',block:'nearest'}); }
+    }
+  });
+}, { rootMargin:'-20% 0px -70% 0px' });
+allSec.forEach(s => obs.observe(s));
+allNi.forEach(n => n.addEventListener('click', () => {
+  allNi.forEach(x => x.classList.remove('active')); n.classList.add('active');
+}));
+
+function setSize(id, btn) {
+  document.querySelectorAll('.sz').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.st-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sz-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function tog(el) {
+  el.classList.toggle('open');
+  const n = el.nextElementSibling;
+  if(n && n.classList.contains('coll')) n.classList.toggle('open');
+}
+
+function switchTab(btn, tabId) {
+  const sec = btn.closest('.sec') || document.body;
+  sec.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  sec.querySelectorAll('.tab-pane').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(tabId).classList.add('active');
+}
+
+function cpCode(btn) {
+  const text = btn.closest('.cb').querySelector('pre').textContent || '';
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'copied!'; btn.classList.add('ok');
+    setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('ok'); }, 2000);
+  }).catch(() => {});
+}
+function cpText(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'copied!'; btn.classList.add('ok');
+    setTimeout(() => { btn.textContent = 'copy'; st.remove('ok'); }, 2000);
+  }).catch(() => {});
+}
+
+function chk(el) {
+  const cb = el.querySelector('input[type=checkbox]');
+  cb.checked = !cb.checked;
+  el.classList.toggle('done', cb.checked);
+}
+</script>
+</body>
+</html>
