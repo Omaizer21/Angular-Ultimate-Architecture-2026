@@ -55,9 +55,9 @@ body{background:var(--bg);color:var(--txt);font-family:var(--mono);min-height:10
 .ht-org{background:var(--odim);border-color:rgba(251,146,60,.3);color:var(--org)}
 .ht-pnk{background:var(--pkdim);border-color:rgba(244,114,182,.3);color:var(--pnk)}
 
-.nav{position:sticky;top:0;z-index:200;background:rgba(7,8,13,.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--bdr);display:flex;overflow-x:auto;scrollbar-width:none}
+.nav{position:sticky;top:0;z-index:200;background:rgba(7,8,13,.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--bdr);display:flex;flex-wrap:wrap;overflow-x:auto;scrollbar-width:none}
 .nav::-webkit-scrollbar{display:none}
-.ni{padding:13px 18px;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--txt3);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;text-decoration:none;display:inline-block}
+.ni{padding:11px 14px;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--txt3);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;text-decoration:none;display:inline-block}
 .ni:hover{color:var(--txt);border-bottom-color:var(--bdr2)}
 .ni.active{color:var(--red);border-bottom-color:var(--red)}
 
@@ -66,7 +66,7 @@ body{background:var(--bg);color:var(--txt);font-family:var(--mono);min-height:10
 .sec-head{display:flex;align-items:flex-start;gap:16px;margin-bottom:32px}
 .sec-icon{width:42px;height:42px;border-radius:var(--rad);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
 .sec-title{font-family:var(--sans);font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
-.sec-desc{font-size:12px;color:var(--txt2);line-height:1.6;letter-spacing:.02em}
+.sec-desc{font-size:13px;color:var(--txt2);line-height:1.65;letter-spacing:.01em}
 
 .size-toggle{display:flex;gap:0;background:var(--sur2);border:1px solid var(--bdr);border-radius:var(--rad);overflow:hidden;margin-bottom:28px;width:fit-content}
 .st-btn{padding:10px 28px;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border:none;background:transparent;color:var(--txt3);transition:all .2s;border-right:1px solid var(--bdr)}
@@ -85,8 +85,8 @@ body{background:var(--bg);color:var(--txt);font-family:var(--mono);min-height:10
 .tl{display:flex;align-items:flex-start;padding:2.5px 0;border-radius:3px;transition:background .1s}
 .tl:hover{background:rgba(255,255,255,.022)}
 .ti{padding-left:18px}
-.tc{font-size:12px;color:var(--txt4);user-select:none;flex-shrink:0;white-space:pre;min-width:18px}
-.tn{font-size:12px;flex:1;line-height:1.5}
+.tc{font-size:12.5px;color:var(--txt4);user-select:none;flex-shrink:0;white-space:pre;min-width:18px}
+.tn{font-size:12.5px;flex:1;line-height:1.55}
 .tcm{font-size:10px;color:var(--txt3);margin-left:10px;font-style:italic;white-space:nowrap;align-self:center}
 .f{color:var(--fld);font-weight:600}.ts{color:#60a5fa}.htm{color:#fb923c}
 .scs{color:#f472b6}.spc{color:var(--grn)}.jsn{color:var(--pur)}
@@ -116,12 +116,12 @@ body{background:var(--bg);color:var(--txt);font-family:var(--mono);min-height:10
 .card:hover{border-color:var(--bdr2);transform:translateY(-2px)}
 .card-title{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
 .card ul{list-style:none;display:flex;flex-direction:column;gap:6px}
-.card li{font-size:11.5px;color:var(--txt2);padding-left:16px;position:relative;line-height:1.55}
+.card li{font-size:12.5px;color:var(--txt2);padding-left:16px;position:relative;line-height:1.6}
 .card li::before{content:"\25B8";position:absolute;left:0;font-size:9px;top:3px}
 .card li strong{color:var(--txt)}
 .card li code{background:var(--sur2);border:1px solid var(--bdr);border-radius:3px;padding:0 5px;font-size:10px;color:var(--blue)}
 
-.cb{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rad);overflow:hidden;font-size:11.5px;line-height:1.72}
+.cb{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rad);overflow:hidden;font-size:12px;line-height:1.76}
 .cb-head{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;background:var(--sur2);border-bottom:1px solid var(--bdr)}
 .cb-lang{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:600;color:var(--txt2);letter-spacing:.05em}
 .cb-copy{font-size:10px;color:var(--txt3);background:none;border:1px solid var(--bdr);border-radius:3px;padding:2px 8px;cursor:pointer;font-family:var(--mono);transition:all .15s}
@@ -136,7 +136,7 @@ code{font-family:var(--mono)}
 .tw{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rad);overflow:hidden}
 table{width:100%;border-collapse:collapse;font-size:11.5px}
 th{text-align:left;padding:9px 14px;background:var(--sur2);color:var(--txt2);font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:10px;border-bottom:1px solid var(--bdr);white-space:nowrap}
-td{padding:8px 14px;border-bottom:1px solid rgba(26,30,46,.6);vertical-align:top;line-height:1.55}
+td{padding:9px 14px;border-bottom:1px solid rgba(26,30,46,.6);vertical-align:top;line-height:1.6;font-size:12px}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:rgba(255,255,255,.012)}
 .td-t{color:var(--cyn);font-weight:600}
@@ -152,7 +152,7 @@ tr:hover td{background:rgba(255,255,255,.012)}
 .co-tip{background:rgba(52,211,153,.06);border-color:var(--grn)}.co-tip .co-t{color:var(--grn)}
 .co-fix{background:rgba(221,0,49,.06);border-color:var(--red)}.co-fix .co-t{color:var(--red)}
 .co-new{background:rgba(251,146,60,.06);border-color:var(--org)}.co-new .co-t{color:var(--org)}
-.co p{color:var(--txt2)}.co code{background:rgba(255,255,255,.06);border-radius:3px;padding:0 5px;font-size:10.5px;color:var(--txt)}
+.co p{color:var(--txt2);font-size:12.5px;line-height:1.65}.co code{background:rgba(255,255,255,.06);border-radius:3px;padding:0 5px;font-size:10.5px;color:var(--txt)}
 .co strong{color:var(--txt)}.co a{color:var(--blue);text-decoration:none}
 
 .div{display:flex;align-items:center;gap:12px;margin:26px 0 18px;font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--txt3)}
@@ -193,7 +193,7 @@ tr:hover td{background:rgba(255,255,255,.012)}
 .mig-step:hover{border-color:var(--bdr2)}
 .mig-num{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--sans);font-size:13px;font-weight:700;flex-shrink:0}
 .mig-title{font-size:13px;font-weight:600;margin-bottom:5px}
-.mig-desc{font-size:11.5px;color:var(--txt2);line-height:1.6}
+.mig-desc{font-size:12.5px;color:var(--txt2);line-height:1.65}
 .mig-desc code{background:var(--sur2);border-radius:3px;padding:0 5px;font-size:10.5px;color:var(--blue)}
 
 .tabs{display:flex;background:var(--sur2);border:1px solid var(--bdr);border-radius:var(--rad) var(--rad) 0 0;overflow:hidden}
@@ -251,6 +251,7 @@ footer a{color:var(--red);text-decoration:none}
 
 <nav class="nav" id="mainnav">
   <a class="ni active" href="#naming">&#128293; Naming Change</a>
+  <a class="ni" href="#layers">&#127970; Layers</a>
   <a class="ni" href="#structure">&#128193; Structure</a>
   <a class="ni" href="#core">&#128274; Core</a>
   <a class="ni" href="#shared">&#128311; Shared</a>
@@ -258,6 +259,8 @@ footer a{color:var(--red);text-decoration:none}
   <a class="ni" href="#layout">&#128759; Layout</a>
   <a class="ni" href="#naming-ref">&#128203; Naming Ref</a>
   <a class="ni" href="#patterns">&#9889; Patterns</a>
+  <a class="ni" href="#signals-ref">&#9889; Signals</a>
+  <a class="ni" href="#forms">&#128221; Forms</a>
   <a class="ni" href="#state">&#128440; State</a>
   <a class="ni" href="#testing">&#129514; Testing</a>
   <a class="ni" href="#cli">&#9000; CLI</a>
@@ -332,6 +335,256 @@ footer a{color:var(--red);text-decoration:none}
 }</code></pre>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="sec" id="layers">
+  <div class="sec-head">
+    <div class="sec-icon" style="background:rgba(79,158,255,.12)">&#127970;</div>
+    <div>
+      <div class="sec-title" style="color:var(--blue)">The 4 Layers — core / shared / features / layout</div>
+      <div class="sec-desc">The most important mental model in Angular architecture. Understanding what belongs in each layer eliminates 90% of structural confusion and "where does this go?" debates.</div>
+    </div>
+  </div>
+
+  <!-- DEPENDENCY DIAGRAM -->
+  <div style="background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rad);padding:24px;margin-bottom:24px">
+    <div style="font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--txt3);margin-bottom:16px;text-align:center">Dependency Flow — arrows show who can import from whom</div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap">
+      <div style="background:rgba(192,132,252,.08);border:1px solid rgba(192,132,252,.3);border-radius:6px;padding:12px 20px;text-align:center">
+        <div style="font-family:var(--sans);font-weight:700;color:var(--pur);font-size:13px">features/</div>
+        <div style="font-size:10px;color:var(--txt3);margin-top:3px">lazy pages &amp; logic</div>
+      </div>
+      <div style="font-size:18px;color:var(--txt4);padding:0 8px">+</div>
+      <div style="background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.3);border-radius:6px;padding:12px 20px;text-align:center">
+        <div style="font-family:var(--sans);font-weight:700;color:var(--grn);font-size:13px">layout/</div>
+        <div style="font-size:10px;color:var(--txt3);margin-top:3px">shell &amp; nav</div>
+      </div>
+      <div style="font-size:20px;color:var(--txt4);padding:0 10px">&#8594;</div>
+      <div style="background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.3);border-radius:6px;padding:12px 20px;text-align:center">
+        <div style="font-family:var(--sans);font-weight:700;color:var(--cyn);font-size:13px">shared/</div>
+        <div style="font-size:10px;color:var(--txt3);margin-top:3px">dumb reusables</div>
+      </div>
+      <div style="font-size:20px;color:var(--txt4);padding:0 10px">&#8594;</div>
+      <div style="background:rgba(221,0,49,.08);border:1px solid rgba(221,0,49,.3);border-radius:6px;padding:12px 20px;text-align:center">
+        <div style="font-family:var(--sans);font-weight:700;color:var(--red);font-size:13px">core/</div>
+        <div style="font-size:10px;color:var(--txt3);margin-top:3px">singletons</div>
+      </div>
+      <div style="font-size:20px;color:var(--txt4);padding:0 10px">&#8594;</div>
+      <div style="background:var(--sur2);border:1px solid var(--bdr2);border-radius:6px;padding:12px 20px;text-align:center">
+        <div style="font-family:var(--sans);font-weight:700;color:var(--txt2);font-size:13px">nothing</div>
+        <div style="font-size:10px;color:var(--txt3);margin-top:3px">no app imports</div>
+      </div>
+    </div>
+    <div style="text-align:center;font-size:11px;color:var(--txt3);margin-top:12px">&#9888; <strong style="color:var(--org)">core and shared never import from features.</strong> Features never import from other features.</div>
+  </div>
+
+  <!-- 4 LAYER CARDS -->
+  <div class="g2" style="margin-bottom:24px">
+
+    <!-- CORE -->
+    <div style="background:var(--sur);border:1px solid rgba(221,0,49,.25);border-radius:var(--rad);overflow:hidden">
+      <div style="background:rgba(221,0,49,.06);border-bottom:1px solid rgba(221,0,49,.2);padding:14px 20px;display:flex;align-items:center;gap:10px">
+        <span style="font-size:20px">&#128274;</span>
+        <div>
+          <div style="font-family:var(--sans);font-weight:700;color:var(--red);font-size:14px">core/ &mdash; The Nervous System</div>
+          <div style="font-size:11px;color:var(--txt3);margin-top:2px">One instance &middot; Always alive &middot; App-wide concern</div>
+        </div>
+      </div>
+      <div style="padding:16px 20px">
+        <p style="font-size:12.5px;color:var(--txt2);line-height:1.65;margin-bottom:12px">Core is for things that need to exist <strong style="color:var(--txt)">exactly once</strong> for the entire app lifetime. Ask: <em>"if I deleted every feature, would I still need this?"</em> If yes &rarr; core.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+          <div>
+            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--grn);margin-bottom:6px">&#9989; Belongs in core/</div>
+            <div class="tree-wrap"><div class="tree-body" style="padding:10px 14px">
+              <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">auth.ts</span><span class="tcm">login state, token</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">auth.guard.ts</span><span class="tcm">block unauth routes</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">auth.interceptor.ts</span><span class="tcm">add Bearer token</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">error.interceptor.ts</span><span class="tcm">catch 401/500 globally</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">seo.ts</span><span class="tcm">set &lt;title&gt; &amp; meta</span></div>
+              <div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn ts">analytics.ts</span><span class="tcm">GA / Mixpanel wrapper</span></div>
+            </div></div>
+          </div>
+          <div>
+            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:6px">&#10060; Does NOT belong</div>
+            <div style="background:var(--sur2);border:1px solid var(--bdr);border-radius:5px;padding:10px 14px">
+              <div style="font-size:12px;color:var(--txt2);line-height:1.7">
+                <div>&#10060; <code>UserCard</code> &rarr; it&apos;s UI &rarr; <code>shared/</code></div>
+                <div>&#10060; <code>ProductsApi</code> &rarr; feature-specific &rarr; <code>features/products/</code></div>
+                <div>&#10060; <code>Button</code> &rarr; reusable UI &rarr; <code>shared/</code></div>
+                <div style="margin-top:8px;font-size:11px;color:var(--txt3)">If deleting a feature makes this irrelevant, it belongs in that feature.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="background:var(--sur2);border:1px solid var(--bdr);border-radius:5px;padding:10px 14px">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:4px">Why only one instance matters</div>
+          <p style="font-size:12px;color:var(--txt2);line-height:1.6">Your <code>Auth</code> service holds the user&apos;s login token. If two instances exist, one has the token and the other is empty. Any component that injects the empty one thinks nobody is logged in. This is the classic CoreModule double-import bug &mdash; see the DI section below for the full story.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SHARED -->
+    <div style="background:var(--sur);border:1px solid rgba(34,211,238,.25);border-radius:var(--rad);overflow:hidden">
+      <div style="background:rgba(34,211,238,.06);border-bottom:1px solid rgba(34,211,238,.2);padding:14px 20px;display:flex;align-items:center;gap:10px">
+        <span style="font-size:20px">&#128311;</span>
+        <div>
+          <div style="font-family:var(--sans);font-weight:700;color:var(--cyn);font-size:14px">shared/ &mdash; The IKEA Catalogue</div>
+          <div style="font-size:11px;color:var(--txt3);margin-top:2px">Reusable &middot; Dumb &middot; No domain knowledge &middot; No business logic</div>
+        </div>
+      </div>
+      <div style="padding:16px 20px">
+        <p style="font-size:12.5px;color:var(--txt2);line-height:1.65;margin-bottom:12px">Think IKEA furniture &mdash; works in any room, doesn&apos;t care which house. Ask: <em>"can I copy this folder into a completely different Angular project and it still works with zero changes?"</em> If yes &rarr; shared.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+          <div>
+            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--grn);margin-bottom:6px">&#9989; Belongs in shared/</div>
+            <div class="tree-wrap"><div class="tree-body" style="padding:10px 14px">
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">button/</span><span class="tcm">used everywhere</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">modal/</span><span class="tcm">generic overlay</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">spinner/</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">data-table/</span><span class="tcm">generic table</span></div>
+              <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">empty-state/</span></div>
+              <div class="tl"><span class="tc">&#9492;&#9472; &#128193; </span><span class="tn f">pipes/</span><span class="tcm">date, truncate, money</span></div>
+            </div></div>
+          </div>
+          <div>
+            <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-bottom:6px">&#10060; Does NOT belong</div>
+            <div style="background:var(--sur2);border:1px solid var(--bdr);border-radius:5px;padding:10px 14px">
+              <div style="font-size:12px;color:var(--txt2);line-height:1.7">
+                <div>&#10060; <code>UserCard</code> &rarr; knows about <code>User</code> type &rarr; <code>features/users/</code></div>
+                <div>&#10060; <code>OrderSummary</code> &rarr; knows about orders &rarr; <code>features/orders/</code></div>
+                <div>&#10060; <code>Auth</code> &rarr; singleton &rarr; <code>core/</code></div>
+                <div style="margin-top:8px;font-size:11px;color:var(--txt3)">If it needs to know your domain model, it&apos;s not shared.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEATURES -->
+    <div style="background:var(--sur);border:1px solid rgba(192,132,252,.25);border-radius:var(--rad);overflow:hidden">
+      <div style="background:rgba(192,132,252,.06);border-bottom:1px solid rgba(192,132,252,.2);padding:14px 20px;display:flex;align-items:center;gap:10px">
+        <span style="font-size:20px">&#128640;</span>
+        <div>
+          <div style="font-family:var(--sans);font-weight:700;color:var(--pur);font-size:14px">features/ &mdash; The Rooms in the House</div>
+          <div style="font-size:11px;color:var(--txt3);margin-top:2px">Self-contained &middot; Lazy-loaded &middot; Owns its data &middot; Never imports siblings</div>
+        </div>
+      </div>
+      <div style="padding:16px 20px">
+        <p style="font-size:12.5px;color:var(--txt2);line-height:1.65;margin-bottom:12px">Each feature is a complete vertical slice: pages, child components, API service, state store, models, routes. Features <strong style="color:var(--txt)">never import from each other</strong>. If two features need something, it moves to <code>shared/</code>.</p>
+        <div class="tree-wrap" style="margin-bottom:10px"><div class="tree-body">
+          <div class="tl"><span class="tc">&#128193; </span><span class="tn f">users/</span><span class="tcm">complete vertical slice</span></div>
+          <div class="ti">
+            <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">user-list/</span><span class="tcm">routable page</span></div>
+            <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">user-card/</span><span class="tcm">used only within users</span></div>
+            <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">users-api.ts</span><span class="tcm">HTTP: /api/users</span></div>
+            <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">users.store.ts</span><span class="tcm">state: list, loading, selected</span></div>
+            <div class="tl"><span class="tc">&#9500;&#9472; </span><span class="tn ts">user.models.ts</span><span class="tcm">interface User {id, name, role}</span></div>
+            <div class="tl"><span class="tc">&#9492;&#9472; </span><span class="tn ts">users.routes.ts</span><span class="tcm">lazy routes</span></div>
+          </div>
+        </div></div>
+        <div style="background:var(--sur2);border:1px solid var(--bdr);border-radius:5px;padding:10px 14px">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--org);margin-bottom:4px">&#128161; The cross-feature problem</div>
+          <p style="font-size:12px;color:var(--txt2);line-height:1.6">If <code>orders/</code> needs to show a user&apos;s name, it gets the user ID as an <code>input()</code> &mdash; it does NOT import from <code>users/</code>. If multiple features need the same component, that component moves to <code>shared/</code>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- LAYOUT -->
+    <div style="background:var(--sur);border:1px solid rgba(52,211,153,.25);border-radius:var(--rad);overflow:hidden">
+      <div style="background:rgba(52,211,153,.06);border-bottom:1px solid rgba(52,211,153,.2);padding:14px 20px;display:flex;align-items:center;gap:10px">
+        <span style="font-size:20px">&#128759;</span>
+        <div>
+          <div style="font-family:var(--sans);font-weight:700;color:var(--grn);font-size:14px">layout/ &mdash; The Walls and Ceiling</div>
+          <div style="font-size:11px;color:var(--txt3);margin-top:2px">Persistent chrome &middot; Route parents &middot; Always visible when authenticated</div>
+        </div>
+      </div>
+      <div style="padding:16px 20px">
+        <p style="font-size:12.5px;color:var(--txt2);line-height:1.65;margin-bottom:12px">Your persistent navigation, header, sidebar. Used as <strong style="color:var(--txt)">route parents</strong> in the router config &mdash; not imported by feature components. The <code>MainLayout</code> wraps authenticated pages; <code>AuthLayout</code> wraps login/register.</p>
+        <div class="tree-wrap" style="margin-bottom:10px"><div class="tree-body">
+          <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">main-layout/</span><span class="tcm">sidebar + header + router-outlet</span></div>
+          <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">auth-layout/</span><span class="tcm">centered card for login pages</span></div>
+          <div class="tl"><span class="tc">&#9500;&#9472; &#128193; </span><span class="tn f">header/</span><span class="tcm">top bar, avatar, notifications</span></div>
+          <div class="tl"><span class="tc">&#9492;&#9472; &#128193; </span><span class="tn f">sidebar/</span><span class="tcm">nav links to features</span></div>
+        </div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- THE DOUBLE IMPORT PROBLEM -->
+  <div style="background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rad);padding:22px 24px;margin-bottom:20px">
+    <div style="font-family:var(--sans);font-size:15px;font-weight:700;color:var(--txt);margin-bottom:4px">&#128308; The CoreModule Double-Import Bug (NgModule era)</div>
+    <div style="font-size:11px;color:var(--txt3);margin-bottom:14px">Classic NgModule problem &mdash; understanding it explains why modern Angular moved to standalone + <code>providedIn:'root'</code></div>
+    <div class="cmp" style="margin-bottom:16px">
+      <div>
+        <div class="rule r-dn">&#10060; What went wrong in NgModules</div>
+        <div class="cb"><pre><code><span class="cm">// AppModule — correct, import once</span>
+<span class="dec">@NgModule</span>({
+  <span class="pr">imports</span>: [<span class="tp">CoreModule</span>] <span class="cm">// ✅ one instance created</span>
+})
+<span class="kw">export class</span> <span class="tp">AppModule</span> {}
+
+<span class="cm">// UsersModule — WRONG, imported again!</span>
+<span class="dec">@NgModule</span>({
+  <span class="pr">imports</span>: [<span class="tp">CoreModule</span>] <span class="cm">// 💥 second instance!</span>
+})
+<span class="kw">export class</span> <span class="tp">UsersModule</span> {}
+
+<span class="cm">// Now Auth has TWO instances:</span>
+<span class="cm">// Instance #1 (AppModule): has the token ✅</span>
+<span class="cm">// Instance #2 (UsersModule): empty, blank 💥</span>
+<span class="cm">// UserListComponent gets instance #2 → thinks</span>
+<span class="cm">// nobody is logged in → silent auth bugs</span></code></pre></div>
+      </div>
+      <div>
+        <div class="rule r-do">&#9989; Modern fix: providedIn:'root' (standalone)</div>
+        <div class="cb"><pre><code><span class="cm">// auth.ts — the service itself declares scope</span>
+<span class="dec">@Injectable</span>({ <span class="pr">providedIn</span>: <span class="str">'root'</span> })
+<span class="kw">export class</span> <span class="tp">Auth</span> {
+  <span class="cm">/* Angular guarantees exactly one instance */</span>
+  <span class="cm">/* no matter how many times inject(Auth) runs */</span>
+}
+
+<span class="cm">// Feature component — just inject, that's it</span>
+<span class="kw">export class</span> <span class="tp">UserList</span> {
+  <span class="kw">private readonly</span> auth = <span class="fn">inject</span>(<span class="tp">Auth</span>);
+  <span class="cm">// ✅ Always the same global instance</span>
+  <span class="cm">// No module to import. No footgun.</span>
+}
+
+<span class="cm">// There is no CoreModule to double-import.</span>
+<span class="cm">// core/ is just a folder convention now.</span></code></pre></div>
+      </div>
+    </div>
+    <div style="background:var(--sur2);border:1px solid var(--bdr);border-radius:5px;padding:12px 16px">
+      <div style="font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--grn);margin-bottom:5px">&#9989; Why the problem is completely gone in standalone Angular</div>
+      <p style="font-size:12.5px;color:var(--txt2);line-height:1.65"><code>providedIn:'root'</code> registers the service directly with the root injector at class definition time. Angular&apos;s DI system deduplicate this &mdash; even if 50 components call <code>inject(Auth)</code>, they all receive the same singleton. There is no <code>CoreModule</code> to accidentally import twice. <code>core/</code> in a modern app is simply a folder that groups related singleton files &mdash; no NgModule, no <code>forRoot()</code>, no footgun.</p>
+    </div>
+  </div>
+
+  <!-- QUICK DECISION TABLE -->
+  <div style="font-family:var(--sans);font-size:13px;font-weight:700;color:var(--txt);margin-bottom:12px">Quick Decision Table &mdash; &ldquo;Where does this go?&rdquo;</div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Thing you&apos;re creating</th><th>Where it goes</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td style="color:var(--txt)"><code>Auth</code> (login state, token)</td><td><span class="td-c">core/auth/</span></td><td class="td-n">Singleton, app-wide, lives forever</td></tr>
+        <tr><td style="color:var(--txt)">HTTP interceptor (add token)</td><td><span class="td-c">core/http/</span></td><td class="td-n">App-wide, runs on every request</td></tr>
+        <tr><td style="color:var(--txt)">Global error handler</td><td><span class="td-c">core/error-handling/</span></td><td class="td-n">App-wide concern</td></tr>
+        <tr><td style="color:var(--txt)"><code>Button</code> component</td><td><span class="td-c">shared/button/</span></td><td class="td-n">Reusable, zero domain knowledge</td></tr>
+        <tr><td style="color:var(--txt)"><code>DateFormatPipe</code></td><td><span class="td-c">shared/pipes/</span></td><td class="td-n">Pure utility, works anywhere</td></tr>
+        <tr><td style="color:var(--txt)"><code>Pagination</code> interface</td><td><span class="td-c">shared/models/</span></td><td class="td-n">Used by many features</td></tr>
+        <tr><td style="color:var(--txt)"><code>UserCard</code> component</td><td><span class="td-c">features/users/</span></td><td class="td-n">Knows about the <code>User</code> domain type</td></tr>
+        <tr><td style="color:var(--txt)"><code>UsersApi</code> (HTTP /api/users)</td><td><span class="td-c">features/users/</span></td><td class="td-n">Feature-specific data fetching</td></tr>
+        <tr><td style="color:var(--txt)"><code>OrdersStore</code> (NgRx)</td><td><span class="td-c">features/orders/</span></td><td class="td-n">Feature state</td></tr>
+        <tr><td style="color:var(--txt)"><code>User</code> interface</td><td><span class="td-c">features/users/user.models.ts</span></td><td class="td-n">Belongs to users domain</td></tr>
+        <tr><td style="color:var(--txt)"><code>Header</code> with nav links</td><td><span class="td-c">layout/header/</span></td><td class="td-n">Persistent chrome</td></tr>
+        <tr><td style="color:var(--txt)">Sidebar with feature nav</td><td><span class="td-c">layout/sidebar/</span></td><td class="td-n">Route parent shell piece</td></tr>
+        <tr><td style="color:var(--txt)">Component used by 2+ features</td><td><span class="td-c">shared/</span></td><td class="td-n">Move to shared when second feature needs it</td></tr>
+      </tbody>
+    </table>
   </div>
 </section>
 
@@ -1086,6 +1339,212 @@ footer a{color:var(--red);text-decoration:none}
     }
   }))
 );</code></pre>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="forms">
+  <div class="sec-head">
+    <div class="sec-icon" style="background:rgba(251,146,60,.1)">&#128221;</div>
+    <div>
+      <div class="sec-title" style="color:var(--org)">Forms — Reactive Forms Best Practices</div>
+      <div class="sec-desc">Reactive Forms remain the standard. There is no official Signal Forms API yet. Bridge to signals via <code>toSignal(form.valueChanges)</code>.</div>
+    </div>
+  </div>
+
+  <div class="co co-info" style="margin-bottom:20px">
+    <div class="co-t">&#128204; No signalForm() API exists</div>
+    <p>Several articles mention <code>signalForm()</code> or <code>signalControl()</code> &mdash; <strong>these do not exist in Angular</strong>. Use <code>NonNullableFormBuilder</code> for reactive forms and bridge to signals with <code>toSignal()</code> for reactivity in templates.</p>
+  </div>
+
+  <div class="g2">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="cb">
+        <div class="cb-head"><div class="cb-lang"><span style="color:var(--blue)">TS</span> login.ts &mdash; reactive form + signal bridge</div><button class="cb-copy" onclick="cpCode(this)">copy</button></div>
+<pre><code><span class="kw">export class</span> <span class="tp">Login</span> {
+  <span class="kw">private readonly</span> fb = <span class="fn">inject</span>(<span class="tp">NonNullableFormBuilder</span>);
+  <span class="kw">private readonly</span> auth = <span class="fn">inject</span>(<span class="tp">Auth</span>);
+
+  <span class="cm">// &#9989; NonNullableFormBuilder: values are never null</span>
+  <span class="kw">readonly</span> form = <span class="kw">this</span>.fb.<span class="fn">group</span>({
+    email:    [<span class="str">''</span>, [Validators.<span class="fn">required</span>, Validators.<span class="fn">email</span>]],
+    password: [<span class="str">''</span>, Validators.<span class="fn">required</span>],
+  });
+
+  <span class="cm">// &#9989; Bridge form state to signals for clean templates</span>
+  <span class="kw">protected readonly</span> isValid = <span class="fn">toSignal</span>(
+    <span class="kw">this</span>.form.statusChanges.<span class="fn">pipe</span>(<span class="fn">map</span>(s => s === <span class="str">'VALID'</span>)),
+    { <span class="pr">initialValue</span>: <span class="kw">false</span> }
+  );
+  <span class="kw">protected readonly</span> isSubmitting = <span class="fn">signal</span>(<span class="kw">false</span>);
+
+  <span class="kw">protected async</span> <span class="fn">submit</span>() {
+    <span class="kw">if</span> (<span class="kw">this</span>.form.<span class="fn">invalid</span>) <span class="kw">return</span>;
+    <span class="kw">this</span>.isSubmitting.<span class="fn">set</span>(<span class="kw">true</span>);
+    <span class="kw">try</span> {
+      <span class="kw">await</span> <span class="fn">firstValueFrom</span>(
+        <span class="kw">this</span>.auth.<span class="fn">login</span>(<span class="kw">this</span>.form.<span class="fn">getRawValue</span>())
+      );
+    } <span class="kw">finally</span> {
+      <span class="kw">this</span>.isSubmitting.<span class="fn">set</span>(<span class="kw">false</span>);
+    }
+  }
+}</code></pre>
+      </div>
+      <div class="cb">
+        <div class="cb-head"><div class="cb-lang"><span style="color:var(--org)">HTML</span> login.html &mdash; template</div><button class="cb-copy" onclick="cpCode(this)">copy</button></div>
+<pre><code>&lt;form [<span class="pr">formGroup</span>]="form" (<span class="pr">ngSubmit</span>)="submit()"&gt;
+  &lt;input <span class="pr">formControlName</span>="email"
+         [<span class="pr">class.invalid</span>]="form.controls.email.invalid
+                          &amp;&amp; form.controls.email.touched" /&gt;
+
+  @<span class="kw">if</span> (form.controls.email.hasError(<span class="str">'email'</span>)
+       &amp;&amp; form.controls.email.touched) {
+    &lt;span class="error"&gt;Invalid email format&lt;/span&gt;
+  }
+
+  &lt;button type="submit"
+    [<span class="pr">disabled</span>]="!isValid() || isSubmitting()"&gt;
+    @<span class="kw">if</span> (isSubmitting()) { Signing in... }
+    @<span class="kw">else</span> { Sign in }
+  &lt;/button&gt;
+&lt;/form&gt;</code></pre>
+      </div>
+    </div>
+    <div class="card" style="align-self:start">
+      <div class="card-title" style="color:var(--org)">Forms Best Practices</div>
+      <ul>
+        <li>Use <strong>NonNullableFormBuilder</strong> &mdash; values are always the declared type, never <code>null</code></li>
+        <li><strong>No template-driven forms</strong> in complex apps &mdash; reactive forms are testable, explicit, composable</li>
+        <li>Use <code>getRawValue()</code> not <code>form.value</code> &mdash; includes disabled controls</li>
+        <li>Bridge to signals with <code>toSignal(form.statusChanges)</code> for template reactivity</li>
+        <li>Validate on <strong>blur + submit</strong>, not on every keystroke</li>
+        <li>Extract complex validators to pure functions in <code>*.validators.ts</code></li>
+        <li>Use <code>FormArray</code> for dynamic lists of fields</li>
+        <li>Never mutate form values directly &mdash; use <code>patchValue()</code> or <code>setValue()</code></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="signals-ref">
+  <div class="sec-head">
+    <div class="sec-icon" style="background:rgba(251,191,36,.1)">&#9889;</div>
+    <div>
+      <div class="sec-title" style="color:var(--ylw)">Signals Quick Reference</div>
+      <div class="sec-desc">Every signal API in one place with when-to-use guidance. All stable in Angular v17+.</div>
+    </div>
+  </div>
+
+  <div class="tw" style="margin-bottom:20px">
+    <table>
+      <thead><tr><th>API</th><th>Creates</th><th>When to Use</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="td-c">signal()</span></td>
+          <td style="color:var(--ylw)">Writable signal</td>
+          <td class="td-n">Local UI state: open/closed, selected tab, form step</td>
+          <td><span class="td-c">const open = signal(false)</span></td>
+        </tr>
+        <tr>
+          <td><span class="td-c">computed()</span></td>
+          <td style="color:var(--cyn)">Read-only derived</td>
+          <td class="td-n">Derived from other signals. Memoized &mdash; only recalculates when deps change</td>
+          <td><span class="td-c">computed(() =&gt; users().filter(u =&gt; u.active))</span></td>
+        </tr>
+        <tr>
+          <td><span class="td-c">input()</span></td>
+          <td style="color:var(--grn)">Component input</td>
+          <td class="td-n">Replace <code>@Input()</code>. Always <code>readonly</code>. Use <code>input.required()</code> for required</td>
+          <td><span class="td-c">readonly id = input.required&lt;string&gt;()</span></td>
+        </tr>
+        <tr>
+          <td><span class="td-c">output()</span></td>
+          <td style="color:var(--grn)">Component output</td>
+          <td class="td-n">Replace <code>@Output()</code>. Call <code>.emit()</code> to fire. Always <code>readonly</code></td>
+          <td><span class="td-c">readonly saved = output&lt;User&gt;()</span></td>
+        </tr>
+        <tr>
+          <td><span class="td-c">model()</span></td>
+          <td style="color:var(--pur)">Two-way binding</td>
+          <td class="td-n">Replace <code>@Input + @Output</code> pairs for two-way binding (<code>[(prop)]</code>)</td>
+          <td><span class="td-c">readonly value = model&lt;string&gt;()</span></td>
+        </tr>
+        <tr>
+          <td><span class="td-c">toSignal()</span></td>
+          <td style="color:var(--org)">Signal from Observable</td>
+          <td class="td-n">Bridge RxJS to signals for templates. Handles subscription/unsubscription automatically</td>
+          <td><span class="td-c">toSignal(http.get('/users'), {initialValue: []})</span></td>
+        </tr>
+        <tr>
+          <td><span class="td-c">toObservable()</span></td>
+          <td style="color:var(--org)">Observable from signal</td>
+          <td class="td-n">When you need RxJS operators on signal changes. Rarely needed</td>
+          <td><span class="td-c">toObservable(searchTerm).pipe(debounceTime(300))</span></td>
+        </tr>
+        <tr>
+          <td><span class="td-c">linkedSignal()</span></td>
+          <td style="color:var(--pnk)">Writable derived</td>
+          <td class="td-n">Derived signal that user can also write to. Selected item that resets when list changes</td>
+          <td><span class="td-c">linkedSignal(() =&gt; items()[0])</span></td>
+        </tr>
+        <tr>
+          <td><span class="td-c">effect()</span></td>
+          <td style="color:var(--red)">Side effect</td>
+          <td class="td-n">Run code when signals change. Use sparingly &mdash; prefer computed(). Never mutate signals inside effect()</td>
+          <td><span class="td-c">effect(() =&gt; localStorage.setItem('x', val()))</span></td>
+        </tr>
+        <tr>
+          <td><span class="td-c">viewChild()</span></td>
+          <td style="color:var(--blue)">Template ref</td>
+          <td class="td-n">Replace <code>@ViewChild</code>. Returns a signal</td>
+          <td><span class="td-c">readonly btn = viewChild&lt;ElementRef&gt;('btn')</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="g2">
+    <div class="cb">
+      <div class="cb-head"><div class="cb-lang"><span style="color:var(--blue)">TS</span> Real-world signal patterns</div><button class="cb-copy" onclick="cpCode(this)">copy</button></div>
+<pre><code><span class="kw">export class</span> <span class="tp">UserSearch</span> {
+  <span class="cm">// &#9989; Input from parent (replaces @Input)</span>
+  <span class="kw">readonly</span> initialFilter = <span class="fn">input</span>(<span class="str">''</span>);
+
+  <span class="cm">// &#9989; Local writable state</span>
+  <span class="kw">protected readonly</span> search = <span class="fn">signal</span>(<span class="str">''</span>);
+  <span class="kw">protected readonly</span> page   = <span class="fn">signal</span>(<span class="nm">1</span>);
+
+  <span class="cm">// &#9989; linkedSignal: resets when parent input changes</span>
+  <span class="kw">protected readonly</span> filter = <span class="fn">linkedSignal</span>(
+    () => <span class="kw">this</span>.<span class="fn">initialFilter</span>()
+  );
+
+  <span class="cm">// &#9989; Derived: recalculate only when deps change</span>
+  <span class="kw">protected readonly</span> hasSearch = <span class="fn">computed</span>(
+    () => <span class="kw">this</span>.<span class="fn">search</span>().<span class="fn">length</span> > <span class="nm">0</span>
+  );
+
+  <span class="cm">// &#9989; Bridge HTTP observable to signal</span>
+  <span class="kw">private readonly</span> store = <span class="fn">inject</span>(<span class="tp">UsersStore</span>);
+  <span class="kw">protected readonly</span> users = <span class="fn">computed</span>(() =>
+    <span class="kw">this</span>.store.<span class="fn">entities</span>()
+      .<span class="fn">filter</span>(u => u.name.<span class="fn">includes</span>(<span class="kw">this</span>.<span class="fn">search</span>()))
+  );
+}</code></pre>
+    </div>
+    <div class="card" style="align-self:start">
+      <div class="card-title" style="color:var(--ylw)">Signal Rules of Thumb</div>
+      <ul>
+        <li>All Angular APIs (<code>input</code>, <code>output</code>, <code>viewChild</code>…) &mdash; always <code>readonly</code></li>
+        <li>Template-only signals &mdash; mark <code>protected</code>, never <code>public</code></li>
+        <li>Never set a signal inside <code>computed()</code> &mdash; use <code>effect()</code> for side effects</li>
+        <li>Never mutate signal state inside <code>effect()</code> &mdash; use <code>untracked()</code> if unavoidable</li>
+        <li>Prefer <code>computed()</code> over <code>effect()</code> for derived values</li>
+        <li>Use <code>toSignal(obs$, {initialValue})</code> to avoid async pipe in templates</li>
+        <li>RxJS still wins for complex async: debounce, switchMap, retry, combineLatest</li>
+        <li>No <code>ngOnDestroy</code> + <code>takeUntil</code> needed when using <code>toSignal()</code></li>
+      </ul>
     </div>
   </div>
 </section>
